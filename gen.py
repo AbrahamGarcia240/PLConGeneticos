@@ -5,6 +5,7 @@ import Tkinter as tk
 import tktable as tkt
 from numpy import *
 import math
+import random
 
 
 #variables globales
@@ -19,6 +20,7 @@ maximos=[]
 minimos=[]
 Bits_Precision=[]
 mjs=[]
+poblacion=[]
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
@@ -69,6 +71,10 @@ def ImprimeArreglos():
 	for i in range(len(mjs)):
 		print mjs[i]
 	print ""
+	print "En Poblacion"
+	for i in range(len(poblacion)):
+		print poblacion[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -99,18 +105,52 @@ def Maximizar():
 	#vs=tk.Frame(otra_ventana)
 	
 	############INICIO ALGORITMO################
-	#Obtengo los maximos y minimos de cada variable
+	#Obtengo los maximos y minimos de cada variable asi como sus mjs
 	for i in range(len(z)):
 		if z[i].get()!="":
 			minimos.append(Minimo(i))
 			maximos.append(Maximo(i))
-			mjs.append(Calcula_mj(i,minimos[i],maximos[i]))
+			mjs.append(Calcula_mj(minimos[i],maximos[i]))
+	
+	#creo 4 vectores de poblacion
+	
+	for i in range(4):
+		poblacion.append(NuevoVector())
 	ImprimeArreglos()
+
+
+	
+def NuevoVector():
+	aux=0
+	vector=[]
+
+	for i in range(len(z)):
+		if z[i].get()!="":
+			#print "mjs: ",
+			#print mjs[i]
+			aux=random.randrange((2**int(mjs[i])))
+			#print "Aux",
+			#print bin(aux)[2:]
+			if len(bin(aux)[2:])!=int(mjs[i]):
+				#print "entre"
+				ceros=int(mjs[i])-len(bin(aux)[2:])
+				for l in range(ceros):
+					vector.append("0")
+			vector.append(bin(aux)[2:])
+	string_vector=''.join(vector)
+	return string_vector
+	#print "Nuevo vector",
+	
+	#print vector
+
+	#for i in range(len(vector)):
+	#	print vector[i],
+	#print ""
+	#primero genero un numero aleatorio por cada variable
 	
 
-def Calcula_mj(idVariable,minimo,maximo):
-	print "minimo: ",minimo,
-	print "maximo: ",maximo
+
+def Calcula_mj(minimo,maximo):
 	aux=maximo-minimo
 	aux*=10**int(Bits_Precision[0].get())
 	auxb=aux
