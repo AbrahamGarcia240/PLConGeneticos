@@ -16,7 +16,7 @@ signo=["" for x in range(5)]
 z=[]
 maximos=[]
 minimos=[]
-
+Bits_Precision=[]
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
@@ -63,6 +63,10 @@ def ImprimeArreglos():
 	for i in range(len(maximos)):
 		print maximos[i]
 	print ""
+	print "Numero de bits de precision"
+	for i in range(len(Bits_Precision)):
+		print Bits_Precision[i].get()
+	print ""
 
 	#print sa_y
 	#print sa_v
@@ -94,8 +98,8 @@ def Maximizar():
 		if z[i].get()!="":
 			minimos.append(Minimo(i))
 			maximos.append(Maximo(i))
-
 	ImprimeArreglos()
+	
 
 
 
@@ -265,13 +269,13 @@ Text_v.grid(column=11,row=2)
 #botones
 contador.set(4)
 boton_Agregar=tk.Button(vp,text="Agregar", command=agrega_condicion)
-boton_Agregar.grid(column=1,row=10)
+boton_Agregar.grid(column=1,row=11)
 
 boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
-boton_Min.grid(column=2, row=10)
+boton_Min.grid(column=2, row=11)
 
 boton_Max=tk.Button(vp,text="Maximizar", command=Maximizar)
-boton_Max.grid(column=3, row=10)
+boton_Max.grid(column=3, row=11)
 
 
 
@@ -282,7 +286,13 @@ Label_Texto.grid(column=1, row=2, columnspan=2)
 Label_Texto=tk.Label(vp,text="Calculadora de algoritmos geneticos V1.0")
 Label_Texto.grid(column=5, row=1, columnspan=6)
 
-
+#bits de precision
+Label_Bits=tk.Label(vp,text="Numero de bits de precision: ")
+Label_Bits.grid(column=1, row=10, columnspan=2)
+bits=tk.StringVar()
+Bits_Precision.append(bits)
+Text_Bits=tk.Entry(vp,width=6,textvariable=bits)
+Text_Bits.grid(column=3,row=10)
 
 raiz.mainloop()
 
