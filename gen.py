@@ -6,7 +6,7 @@ import tktable as tkt
 from numpy import *
 
 
-#variables para guardar las condiciones
+#variables globales
 sa_x=[]
 sa_y=[]
 sa_v=[]
@@ -14,6 +14,9 @@ sa_w=[]
 igual=[]
 signo=["" for x in range(5)]
 z=[]
+maximos=[]
+minimos=[]
+
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
@@ -25,24 +28,40 @@ def Minimizar():
 	print "hola"
 
 def ImprimeArreglos():
+	print "EN X: "
 	for i in range(len(sa_x)):
 		print sa_x[i].get(),
 	print ""
+	print "EN Y: "
 	for i in range(len(sa_y)):
 		print sa_y[i].get(),
 	print ""
+	print "EN V: "
 	for i in range(len(sa_v)):
 		print sa_v[i].get(),
 	print ""
+	print "EN W: "
 	for i in range(len(sa_w)):
 		print sa_w[i].get(),
 	print ""
+	print "EN INDEPENDIENTE: "
 	for i in range(len(igual)):
 		print igual[i].get(),
 	print ""
+	print "EN SIGNOS: "
 	print signo
+	print "Funcion objetivo"
 	for i in range(len(z)):
 		print z[i].get(),
+	print ""
+
+	print "En minimos"
+	for i in range(len(minimos)):
+		print minimos[i]
+	print ""
+	print "En maximos"
+	for i in range(len(maximos)):
+		print maximos[i]
 	print ""
 
 	#print sa_y
@@ -52,7 +71,6 @@ def ImprimeArreglos():
 	#print signo
 
 def Maximizar():
-	ImprimeArreglos()
 	#Configuraciones basicas
 	otra_ventana=tk.Toplevel()
 	vent=tk.Frame(otra_ventana)
@@ -70,7 +88,55 @@ def Maximizar():
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 	
+	############INICIO ALGORITMO################
+	#Obtengo los maximos y minimos de cada variable
+	for i in range(len(z)):
+		if z[i].get()!="":
+			minimos.append(Minimo(i))
+			maximos.append(Maximo(i))
 
+	ImprimeArreglos()
+
+
+
+def Maximo(idVariable):
+	maximo=-99999
+	if idVariable==0:
+		for i in range(len(sa_x)):
+			if int(sa_x[i].get())>=maximo:
+				maximo=int(sa_x[i].get())
+	elif idVariable==1:
+		for i in range(len(sa_y)):
+			if int(sa_y[i].get())>=maximo:
+				maximo=int(sa_y[i].get())
+	elif idVariable==2:
+		for i in range(len(sa_w)):
+			if int(sa_w[i].get())>=maximo:
+				maximo=int(sa_w[i].get())
+	elif idVariable==3:
+		for i in range(len(sa_v)):
+			if int(sa_v[i].get())>=maximo:
+				maximo=int(sa_v[i].get())
+	return maximo
+def Minimo(idVariable):
+	minimo=99999
+	if idVariable==0:
+		for i in range(len(sa_x)):
+			if int(sa_x[i].get())<minimo:
+				minimo=int(sa_x[i].get())
+	elif idVariable==1:
+		for i in range(len(sa_y)):
+			if int(sa_y[i].get())<minimo:
+				minimo=int(sa_y[i].get())
+	elif idVariable==2:
+		for i in range(len(sa_w)):
+			if int(sa_w[i].get())<minimo:
+				minimo=int(sa_w[i].get())
+	elif idVariable==3:
+		for i in range(len(sa_v)):
+			if int(sa_v[i].get())<minimo:
+				minimo=int(sa_v[i].get())
+	return minimo
 
 def fin():
 	raiz.destroy()
