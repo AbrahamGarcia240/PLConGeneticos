@@ -13,6 +13,10 @@ sa_x=[]
 sa_y=[]
 sa_v=[]
 sa_w=[]
+x_entabla=[0,0,0,0]
+y_entabla=[0,0,0,0]
+w_entabla=[0,0,0,0]
+v_entabla=[0,0,0,0]
 igual=[]
 signo=["" for x in range(5)]
 z=[]
@@ -75,6 +79,22 @@ def ImprimeArreglos():
 	for i in range(len(poblacion)):
 		print poblacion[i]
 	print ""
+	print "En Tabla x"
+	for i in range(len(x_entabla)):
+		print x_entabla[i]
+	print ""
+	print "En Tabla y"
+	for i in range(len(y_entabla)):
+		print y_entabla[i]
+	print ""
+	print "En Tabla w"
+	for i in range(len(w_entabla)):
+		print w_entabla[i]
+	print ""
+	print "En Tabla v"
+	for i in range(len(v_entabla)):
+		print v_entabla[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -87,6 +107,27 @@ def ImprimeArreglos():
 	#print signo
 
 def Maximizar():
+	############INICIO ALGORITMO################
+	#Obtengo los maximos y minimos de cada variable asi como sus mjs
+	for i in range(len(z)):
+		if z[i].get()!="":
+			minimos.append(Minimo(i))
+			maximos.append(Maximo(i))
+			mjs.append(Calcula_mj(minimos[i],maximos[i]))
+	
+	#creo 4 vectores de poblacion
+	
+	for i in range(4):
+		poblacion.append(NuevoVector())
+		SeleccionNatural(i) ##i
+
+	#obtengo los valores de los vectores que sobrevivieron para la tabla
+	for i in range(4):
+		Variable_enTabla(i)
+
+	ImprimeArreglos()
+	#Los vectores que estan aqui son aptos para continuar
+
 	#Configuraciones basicas
 	otra_ventana=tk.Toplevel()
 	vent=tk.Frame(otra_ventana)
@@ -104,20 +145,25 @@ def Maximizar():
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 	
-	############INICIO ALGORITMO################
-	#Obtengo los maximos y minimos de cada variable asi como sus mjs
+	
+
+def Variable_enTabla(idVector):
+	strings=[]
+	acumulador=0
 	for i in range(len(z)):
 		if z[i].get()!="":
-			minimos.append(Minimo(i))
-			maximos.append(Maximo(i))
-			mjs.append(Calcula_mj(minimos[i],maximos[i]))
-	
-	#creo 4 vectores de poblacion
-	
-	for i in range(4):
-		poblacion.append(NuevoVector())
-		SeleccionNatural(i) ##i
-	ImprimeArreglos()
+			#obtener x,y,w,v del vector
+			strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
+			acumulador+=int(mjs[i])
+	if len(minimos)>0 and len(strings)>0 and len(maximos)>0 and len(mjs)>0:
+		x_entabla[idVector]=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
+	if len(minimos)>1 and len(strings)>1 and len(maximos)>1 and len(mjs)>1:
+		y_entabla[idVector]=float(minimos[1])+int(strings[1],2)*((float(maximos[1])-float(minimos[1])))/(2**int(mjs[1])-1)
+	if len(minimos)>2 and len(strings)>2 and len(maximos)>2 and len(mjs)>2:
+		w_entabla[idVector]=float(minimos[2])+int(strings[2],2)*((float(maximos[2])-float(minimos[2])))/(2**int(mjs[2])-1)
+	if len(minimos)>3 and len(strings)>3 and len(maximos)>3 and len(mjs)>3:
+		v_entabla[idVector]=float(minimos[3])+int(strings[3],2)*((float(maximos[3])-float(minimos[3])))/(2**int(mjs[3])-1)
+
 
 
 def SeleccionNatural(idVector):
@@ -126,7 +172,7 @@ def SeleccionNatural(idVector):
 		vivio=0
 		strings=[]
 		acumulador=0
-		print poblacion[idVector]
+		#print poblacion[idVector]
 		for i in range(len(z)):
 			if z[i].get()!="":
 				#obtener x,y,w,v del vector
@@ -140,35 +186,48 @@ def SeleccionNatural(idVector):
 		for i in range(len(igual)):
 			#evaluo el polinomio
 			if len(strings)>0:
-				print "entre a 0"
-				if sa_x[i].get()!="" and strings[0]!="":
+				#print "entre a 0"
+				if sa_x[i].get()!="" and strings[0]!="" and minimos[0]!="" and mjs[0]!="":
 					#print  int(sa_x[i].get()),
 					#print "*",
 					#print  int(strings[0],2)
-					valor+=int(sa_x[i].get())*int(strings[0],2)
+
+					valor_procedimiento=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_x[i].get())*valor_procedimiento
 			if len(strings)>1:
-				print "entre a 1"
-				if sa_y[i].get()!="" and strings[1]!="":
+				#print "entre a 1"
+				if sa_y[i].get()!="" and strings[1]!="" and minimos[1]!="" and mjs[1]!="":
 					#print  int(sa_y[i].get()),
 					#print "*",
 					#print  int(strings[1],2)
-					valor+=int(sa_y[i].get())*int(strings[1],2)
+					valor_procedimiento=float(minimos[1])+int(strings[1],2)*((float(maximos[1])-float(minimos[1])))/(2**int(mjs[1])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_y[i].get())*valor_procedimiento
 			if len(strings)>2:
-				print "entre a 2"
-				if sa_w[i].get()!="" and strings[2]!="":
+				#print "entre a 2"
+				if sa_w[i].get()!="" and strings[2]!="" and minimos[2]!="" and mjs[2]!="":
 					#print  int(sa_w[i].get()),
 					#print "*",
 					#print  int(strings[2],2)
-					valor+=int(sa_w[i].get())*int(strings[2],2)
+					valor_procedimiento=float(minimos[2])+int(strings[2],2)*((float(maximos[2])-float(minimos[2])))/(2**int(mjs[2])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_w[i].get())*valor_procedimiento
 			if len(strings)>3:
-				print "entre a 3"
-				if sa_v[i].get()!="" and strings[3]!="":
+				#print "entre a 3"
+				if sa_v[i].get()!="" and strings[3]!="" and minimos[3]!="" and mjs[3]!="":
 					#print  int(sa_v[i].get()),
 					#print "*",
 					#print  int(strings[3],2)
-					valor+=int(sa_v[i].get())*int(strings[3],2)
-			print "VALOR:",
-			print valor
+					valor_procedimiento=float(minimos[3])+int(strings[3],2)*((float(maximos[3])-float(minimos[3])))/(2**int(mjs[3])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_v[i].get())*valor_procedimiento
+			#print "VALOR:",
+			#print valor
 		
 			#checo el signo 
 			if signo[i]=="<=":
@@ -187,12 +246,12 @@ def SeleccionNatural(idVector):
 				if valor==int(igual[i].get()):
 					sobrevive=1
 			if sobrevive==1:
-				print "sobrevive"
+				#print "sobrevive"
 				sobrevive=0
 				vivio+=1
 			else:
 				break
-				print "muere!"
+				#print "muere!"
 
 		if vivio==len(igual):
 			return poblacion[idVector]
