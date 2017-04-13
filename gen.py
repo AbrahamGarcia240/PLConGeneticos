@@ -22,25 +22,9 @@ raiz.title("Algoritmos geneticos")
 
 
 def Minimizar():
-	#Configuraciones basicas
-	otra_ventana=tk.Toplevel()
-	vent=tk.Frame(otra_ventana)
-	raiz.withdraw()
-	vent.grid(column=0, row=0,padx=(50,50), pady=(10,10))
-	vent.columnconfigure(0,weight=1)
-	vent.rowconfigure(0,weight=1)
+	print "hola"
 
-
-	Boton_salir=tk.Button(vent,text="Salir", command=fin)
-	Boton_salir.grid(column=1,row=1)
-	
-	Tabla=tkt.Table(vent,rows=5,cols=5)
-	Tabla.grid(column=1, row=3)
-	otra_ventana.mainloop()
-	#vs=tk.Frame(otra_ventana)
-	
-
-
+def ImprimeArreglos():
 	for i in range(len(sa_x)):
 		print sa_x[i].get(),
 	print ""
@@ -66,6 +50,26 @@ def Minimizar():
 	#print sa_w
 	#print igual
 	#print signo
+
+def Maximizar():
+	ImprimeArreglos()
+	#Configuraciones basicas
+	otra_ventana=tk.Toplevel()
+	vent=tk.Frame(otra_ventana)
+	raiz.withdraw()
+	vent.grid(column=0, row=0,padx=(50,50), pady=(10,10))
+	vent.columnconfigure(0,weight=1)
+	vent.rowconfigure(0,weight=1)
+
+
+	Boton_salir=tk.Button(vent,text="Salir", command=fin)
+	Boton_salir.grid(column=1,row=1)
+	
+	Tabla=tkt.Table(vent,rows=5,cols=5)
+	Tabla.grid(column=1, row=3)
+	otra_ventana.mainloop()
+	#vs=tk.Frame(otra_ventana)
+	
 
 
 def fin():
@@ -117,13 +121,13 @@ def agrega_condicion():
 			choices={'>=','<=','='}
 			tkvar.set('=')
 			popupMenu=tk.OptionMenu(vp,tkvar,*choices)
-			popupMenu.grid(column=10, row=numCondiciones)
+			popupMenu.grid(column=13, row=numCondiciones)
 			tkvar.trace('w', change_drop)
 
 			iguals=tk.StringVar()
 			igual.append(iguals)
 			Text_igual=tk.Entry(vp,width=6,textvariable=iguals)
-			Text_igual.grid(column=11,row=numCondiciones)
+			Text_igual.grid(column=14,row=numCondiciones)
 			#vp.pack()
 
 	except IndexError:
@@ -199,6 +203,9 @@ boton_Agregar.grid(column=1,row=10)
 
 boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
 boton_Min.grid(column=2, row=10)
+
+boton_Max=tk.Button(vp,text="Maximizar", command=Maximizar)
+boton_Max.grid(column=3, row=10)
 
 
 
