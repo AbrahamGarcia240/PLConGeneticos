@@ -116,10 +116,22 @@ def Maximizar():
 	
 	for i in range(4):
 		poblacion.append(NuevoVector())
+		SeleccionNatural(i)
 	ImprimeArreglos()
 
 
-	
+def SeleccionNatural(idVector):
+	strings=[]
+	acumulador=0
+	print poblacion[idVector]
+	for i in range(len(z)):
+		if z[i].get()!="":
+			#obtener x,y,w,v del vector
+			strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
+			acumulador+=int(mjs[i])
+	print "Variables"
+	print strings
+
 def NuevoVector():
 	aux=0
 	vector=[]
