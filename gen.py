@@ -114,9 +114,9 @@ def Maximizar():
 	
 	#creo 4 vectores de poblacion
 	
-	for i in range(4):
-		poblacion.append(NuevoVector())
-		SeleccionNatural(i)
+	#for i in range(4):
+	poblacion.append(NuevoVector())
+	SeleccionNatural(0) ##i
 	#ImprimeArreglos()
 
 
@@ -133,7 +133,7 @@ def SeleccionNatural(idVector):
 	#print strings
 
 	sobrevive=0
-
+	vivio=0
 	valor=0
 	for i in range(len(igual)):
 		#evaluo el polinomio
@@ -169,8 +169,35 @@ def SeleccionNatural(idVector):
 		print valor
 	
 		#checo el signo 
+		if signo[i]=="<=":
+			#print signo[i],
+			#print igual[i].get()
+			if valor <= int(igual[i].get()):
+				sobrevive=1
+		elif signo[i]==">=":
+			#print signo[i],
+			#print igual[i].get()
+			if valor>=int(igual[i].get()):
+				sobrevive=1
+		else:
+			#print signo[i],
+			#print igual[i].get()
+			if valor==int(igual[i].get()):
+				sobrevive=1
+		if sobrevive==1:
+			print "sobrevive"
+			sobrevive=0
+			vivio+=1
+		else:
+			break
+			print "muere!"
 
-
+	if vivio==len(igual):
+		return poblacion[idVector]
+	else:
+		poblacion[idVector]=NuevoVector()
+		SeleccionNatural(idVector)
+	return poblacion[idVector]
 
 def NuevoVector():
 	aux=0
