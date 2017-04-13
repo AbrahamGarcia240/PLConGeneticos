@@ -114,90 +114,91 @@ def Maximizar():
 	
 	#creo 4 vectores de poblacion
 	
-	#for i in range(4):
-	poblacion.append(NuevoVector())
-	SeleccionNatural(0) ##i
-	#ImprimeArreglos()
+	for i in range(4):
+		poblacion.append(NuevoVector())
+		SeleccionNatural(i) ##i
+	ImprimeArreglos()
 
 
 def SeleccionNatural(idVector):
-	strings=[]
-	acumulador=0
-	print poblacion[idVector]
-	for i in range(len(z)):
-		if z[i].get()!="":
-			#obtener x,y,w,v del vector
-			strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
-			acumulador+=int(mjs[i])
-	#print "Variables",
-	#print strings
-
-	sobrevive=0
 	vivio=0
-	valor=0
-	for i in range(len(igual)):
-		#evaluo el polinomio
-		if len(strings)>0:
-			print "entre a 0"
-			if sa_x[i].get()!="" and strings[0]!="":
-				#print  int(sa_x[i].get()),
-				#print "*",
-				#print  int(strings[0],2)
-				valor+=int(sa_x[i].get())*int(strings[0],2)
-		if len(strings)>1:
-			print "entre a 1"
-			if sa_y[i].get()!="" and strings[1]!="":
-				#print  int(sa_y[i].get()),
-				#print "*",
-				#print  int(strings[1],2)
-				valor+=int(sa_y[i].get())*int(strings[1],2)
-		if len(strings)>2:
-			print "entre a 2"
-			if sa_w[i].get()!="" and strings[2]!="":
-				#print  int(sa_w[i].get()),
-				#print "*",
-				#print  int(strings[2],2)
-				valor+=int(sa_w[i].get())*int(strings[2],2)
-		if len(strings)>3:
-			print "entre a 3"
-			if sa_v[i].get()!="" and strings[3]!="":
-				#print  int(sa_v[i].get()),
-				#print "*",
-				#print  int(strings[3],2)
-				valor+=int(sa_v[i].get())*int(strings[3],2)
-		print "VALOR:",
-		print valor
-	
-		#checo el signo 
-		if signo[i]=="<=":
-			#print signo[i],
-			#print igual[i].get()
-			if valor <= int(igual[i].get()):
-				sobrevive=1
-		elif signo[i]==">=":
-			#print signo[i],
-			#print igual[i].get()
-			if valor>=int(igual[i].get()):
-				sobrevive=1
-		else:
-			#print signo[i],
-			#print igual[i].get()
-			if valor==int(igual[i].get()):
-				sobrevive=1
-		if sobrevive==1:
-			print "sobrevive"
-			sobrevive=0
-			vivio+=1
-		else:
-			break
-			print "muere!"
+	while not vivio==len(igual):
+		vivio=0
+		strings=[]
+		acumulador=0
+		print poblacion[idVector]
+		for i in range(len(z)):
+			if z[i].get()!="":
+				#obtener x,y,w,v del vector
+				strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
+				acumulador+=int(mjs[i])
+		#print "Variables",
+		#print strings
 
-	if vivio==len(igual):
-		return poblacion[idVector]
-	else:
-		poblacion[idVector]=NuevoVector()
-		SeleccionNatural(idVector)
-	return poblacion[idVector]
+		sobrevive=0
+		valor=0
+		for i in range(len(igual)):
+			#evaluo el polinomio
+			if len(strings)>0:
+				print "entre a 0"
+				if sa_x[i].get()!="" and strings[0]!="":
+					#print  int(sa_x[i].get()),
+					#print "*",
+					#print  int(strings[0],2)
+					valor+=int(sa_x[i].get())*int(strings[0],2)
+			if len(strings)>1:
+				print "entre a 1"
+				if sa_y[i].get()!="" and strings[1]!="":
+					#print  int(sa_y[i].get()),
+					#print "*",
+					#print  int(strings[1],2)
+					valor+=int(sa_y[i].get())*int(strings[1],2)
+			if len(strings)>2:
+				print "entre a 2"
+				if sa_w[i].get()!="" and strings[2]!="":
+					#print  int(sa_w[i].get()),
+					#print "*",
+					#print  int(strings[2],2)
+					valor+=int(sa_w[i].get())*int(strings[2],2)
+			if len(strings)>3:
+				print "entre a 3"
+				if sa_v[i].get()!="" and strings[3]!="":
+					#print  int(sa_v[i].get()),
+					#print "*",
+					#print  int(strings[3],2)
+					valor+=int(sa_v[i].get())*int(strings[3],2)
+			print "VALOR:",
+			print valor
+		
+			#checo el signo 
+			if signo[i]=="<=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor <= int(igual[i].get()):
+					sobrevive=1
+			elif signo[i]==">=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor>=int(igual[i].get()):
+					sobrevive=1
+			else:
+				#print signo[i],
+				#print igual[i].get()
+				if valor==int(igual[i].get()):
+					sobrevive=1
+			if sobrevive==1:
+				print "sobrevive"
+				sobrevive=0
+				vivio+=1
+			else:
+				break
+				print "muere!"
+
+		if vivio==len(igual):
+			return poblacion[idVector]
+		else:
+			poblacion[idVector]=NuevoVector()
+	
 
 def NuevoVector():
 	aux=0
