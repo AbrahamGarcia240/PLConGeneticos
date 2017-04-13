@@ -113,7 +113,15 @@ def Calcula_mj(idVariable,minimo,maximo):
 	print "maximo: ",maximo
 	aux=maximo-minimo
 	aux*=10**int(Bits_Precision[0].get())
-	return round(math.log(aux)/math.log(2))
+	auxb=aux
+	aux=round(math.log(aux)/math.log(2))
+
+	#verificamos que cumplan las condifciones#
+	if 2**(aux-1)<=auxb and (2**aux)-1>=auxb:
+		return aux
+	else:
+		aux+=1
+	return aux
 
 
 def Maximo(idVariable):
