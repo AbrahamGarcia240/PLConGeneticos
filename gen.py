@@ -117,7 +117,7 @@ def Maximizar():
 	for i in range(4):
 		poblacion.append(NuevoVector())
 		SeleccionNatural(i)
-	ImprimeArreglos()
+	#ImprimeArreglos()
 
 
 def SeleccionNatural(idVector):
@@ -129,8 +129,48 @@ def SeleccionNatural(idVector):
 			#obtener x,y,w,v del vector
 			strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
 			acumulador+=int(mjs[i])
-	print "Variables"
-	print strings
+	#print "Variables",
+	#print strings
+
+	sobrevive=0
+
+	valor=0
+	for i in range(len(igual)):
+		#evaluo el polinomio
+		if len(strings)>0:
+			print "entre a 0"
+			if sa_x[i].get()!="" and strings[0]!="":
+				#print  int(sa_x[i].get()),
+				#print "*",
+				#print  int(strings[0],2)
+				valor+=int(sa_x[i].get())*int(strings[0],2)
+		if len(strings)>1:
+			print "entre a 1"
+			if sa_y[i].get()!="" and strings[1]!="":
+				#print  int(sa_y[i].get()),
+				#print "*",
+				#print  int(strings[1],2)
+				valor+=int(sa_y[i].get())*int(strings[1],2)
+		if len(strings)>2:
+			print "entre a 2"
+			if sa_w[i].get()!="" and strings[2]!="":
+				#print  int(sa_w[i].get()),
+				#print "*",
+				#print  int(strings[2],2)
+				valor+=int(sa_w[i].get())*int(strings[2],2)
+		if len(strings)>3:
+			print "entre a 3"
+			if sa_v[i].get()!="" and strings[3]!="":
+				#print  int(sa_v[i].get()),
+				#print "*",
+				#print  int(strings[3],2)
+				valor+=int(sa_v[i].get())*int(strings[3],2)
+		print "VALOR:",
+		print valor
+	
+		#checo el signo 
+
+
 
 def NuevoVector():
 	aux=0
