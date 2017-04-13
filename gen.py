@@ -60,34 +60,34 @@ def agrega_condicion():
 
 		if numCondiciones<10:
 			Label_x=tk.Label(vp,text="X+")
-			Label_x.grid(column=3, row=numCondiciones)
+			Label_x.grid(column=6, row=numCondiciones)
 
 			Label_y=tk.Label(vp,text="Y+")
-			Label_y.grid(column=5, row=numCondiciones)
+			Label_y.grid(column=8, row=numCondiciones)
 
 			Label_w=tk.Label(vp,text="W+")
-			Label_w.grid(column=7, row=numCondiciones)
+			Label_w.grid(column=10, row=numCondiciones)
 
 			Label_v=tk.Label(vp,text="V")
-			Label_v.grid(column=9, row=numCondiciones)
+			Label_v.grid(column=12, row=numCondiciones)
 
 			#Textareas
 			sax=tk.StringVar()
 			sa_x.append(sax)
 			Text_x=tk.Entry(vp,width=6,textvariable=sax)
-			Text_x.grid(column=2,row=numCondiciones)
+			Text_x.grid(column=5,row=numCondiciones)
 			say=tk.StringVar()
 			sa_y.append(say)
 			Texto_y=tk.Entry(vp,width=6,textvariable=say)
-			Texto_y.grid(column=4,row=numCondiciones)
+			Texto_y.grid(column=7,row=numCondiciones)
 			saw=tk.StringVar()
 			sa_w.append(saw)
 			Text_w=tk.Entry(vp,width=6,textvariable=saw)
-			Text_w.grid(column=6,row=numCondiciones)
+			Text_w.grid(column=9,row=numCondiciones)
 			sav=tk.StringVar()
 			sa_v.append(sav)
 			Text_v=tk.Entry(vp,width=6,textvariable=sav)
-			Text_v.grid(column=8,row=numCondiciones)
+			Text_v.grid(column=11,row=numCondiciones)
 
 			##print sa_x[0].get()
 			##print sa_x[1].get()
@@ -131,19 +131,19 @@ vp.rowconfigure(0,weight=1)
 Label_titulo=tk.Label(vp, text="Solucionador de problemas de P.L. mediante algoritmos geneticos")
 #Label_titulo.grid(column=3,row=1)
 Label_z=tk.Label(vp,text="Z=")
-Label_z.grid(column=1, row=2)
+Label_z.grid(column=4, row=2)
 
 Label_x=tk.Label(vp,text="X+")
-Label_x.grid(column=3, row=2)
+Label_x.grid(column=6, row=2)
 
 Label_y=tk.Label(vp,text="Y+")
-Label_y.grid(column=5, row=2)
+Label_y.grid(column=8, row=2)
 
 Label_w=tk.Label(vp,text="W+")
-Label_w.grid(column=7, row=2)
+Label_w.grid(column=10, row=2)
 
 Label_v=tk.Label(vp,text="V")
-Label_v.grid(column=9, row=2)
+Label_v.grid(column=12, row=2)
 
 
 
@@ -152,31 +152,42 @@ Label_v.grid(column=9, row=2)
 x_main=tk.StringVar()
 z.append(x_main)
 Text_x=tk.Entry(vp,width=6,textvariable=x_main)
-Text_x.grid(column=2,row=2)
+Text_x.grid(column=5,row=2)
 
 y_main=tk.StringVar()
 z.append(y_main)
 Text_y=tk.Entry(vp,width=6,textvariable=y_main)
-Text_y.grid(column=4,row=2)
+Text_y.grid(column=7,row=2)
 
 w_main=tk.StringVar()
 z.append(w_main)
 Text_w=tk.Entry(vp,width=6,textvariable=w_main)
-Text_w.grid(column=6,row=2)
+Text_w.grid(column=9,row=2)
 
 v_main=tk.StringVar()
 z.append(v_main)
 Text_v=tk.Entry(vp,width=6,textvariable=v_main)
-Text_v.grid(column=8,row=2)
+Text_v.grid(column=11,row=2)
 
 
 #botones
 contador.set(4)
 boton_Agregar=tk.Button(vp,text="Agregar", command=agrega_condicion)
-boton_Agregar.grid(column=4,row=3)
+boton_Agregar.grid(column=1,row=10)
 
 boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
-boton_Min.grid(column=5, row=3)
+boton_Min.grid(column=2, row=10)
+
+
+
+#texto a lado de Z
+
+Label_Texto=tk.Label(vp,text="Funcion objetivo: ")
+Label_Texto.grid(column=1, row=2, columnspan=2)
+Label_Texto=tk.Label(vp,text="Calculadora de algoritmos geneticos V1.0")
+Label_Texto.grid(column=5, row=1, columnspan=6)
+
+
 
 raiz.mainloop()
 
