@@ -12,12 +12,44 @@ sa_v=[]
 sa_w=[]
 igual=[]
 signo=["" for x in range(5)]
+z=[]
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
 tkvar=tk.StringVar(raiz)
 choices={'>=','<=','='}
 tkvar.set('=')
+
+
+
+def Minimizar():
+
+	for i in range(len(sa_x)):
+		print sa_x[i].get(),
+	print ""
+	for i in range(len(sa_y)):
+		print sa_y[i].get(),
+	print ""
+	for i in range(len(sa_v)):
+		print sa_v[i].get(),
+	print ""
+	for i in range(len(sa_w)):
+		print sa_w[i].get(),
+	print ""
+	for i in range(len(igual)):
+		print igual[i].get(),
+	print ""
+	print signo
+	for i in range(len(z)):
+		print z[i].get(),
+	print ""
+
+	#print sa_y
+	#print sa_v
+	#print sa_w
+	#print igual
+	#print signo
+
 
 def agrega_condicion():
 	global tkvar
@@ -67,10 +99,10 @@ def agrega_condicion():
 			tkvar.trace('w', change_drop)
 
 			iguals=tk.StringVar()
-			igual.append(igual)
+			igual.append(iguals)
 			Text_igual=tk.Entry(vp,width=6,textvariable=iguals)
 			Text_igual.grid(column=11,row=numCondiciones)
-			vp.pack()
+			#vp.pack()
 
 	except IndexError:
 			print "No se permiten mas de 5 condiciones"
@@ -78,9 +110,7 @@ def agrega_condicion():
 def change_drop(*args):
 	global tkvar
 	global choices
-	print tkvar.get(),
 	signo[contador.get()-5]=tkvar.get()
-	print signo[contador.get()-5]
 
 
 ###############################INICIA MAIN##########################
@@ -119,19 +149,23 @@ Label_v.grid(column=9, row=2)
 
 
 #Textareas
-x_main=""
+x_main=tk.StringVar()
+z.append(x_main)
 Text_x=tk.Entry(vp,width=6,textvariable=x_main)
 Text_x.grid(column=2,row=2)
 
-y_main=""
+y_main=tk.StringVar()
+z.append(y_main)
 Text_y=tk.Entry(vp,width=6,textvariable=y_main)
 Text_y.grid(column=4,row=2)
 
-w_main=""
+w_main=tk.StringVar()
+z.append(w_main)
 Text_w=tk.Entry(vp,width=6,textvariable=w_main)
 Text_w.grid(column=6,row=2)
 
-v_main=""
+v_main=tk.StringVar()
+z.append(v_main)
 Text_v=tk.Entry(vp,width=6,textvariable=v_main)
 Text_v.grid(column=8,row=2)
 
@@ -140,6 +174,9 @@ Text_v.grid(column=8,row=2)
 contador.set(4)
 boton_Agregar=tk.Button(vp,text="Agregar", command=agrega_condicion)
 boton_Agregar.grid(column=4,row=3)
+
+boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
+boton_Min.grid(column=5, row=3)
 
 raiz.mainloop()
 
