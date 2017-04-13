@@ -2,6 +2,7 @@
 
 import sys
 import Tkinter as tk
+import tktable as tkt
 from numpy import *
 
 
@@ -23,16 +24,20 @@ tkvar.set('=')
 
 
 def Minimizar():
+	#Configuraciones basicas
 	otra_ventana=tk.Toplevel()
 	vent=tk.Frame(otra_ventana)
 	raiz.withdraw()
 	vent.grid(column=0, row=0,padx=(50,50), pady=(10,10))
 	vent.columnconfigure(0,weight=1)
 	vent.rowconfigure(0,weight=1)
+
+
 	Boton_salir=tk.Button(vent,text="Salir", command=fin)
 	Boton_salir.grid(column=1,row=1)
 	
-
+	Tabla=tkt.Table(vent,rows=5,cols=5)
+	Tabla.grid(column=1, row=3)
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 	
