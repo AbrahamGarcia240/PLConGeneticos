@@ -4,6 +4,7 @@ import sys
 import Tkinter as tk
 import tktable as tkt
 from numpy import *
+import math
 
 
 #variables globales
@@ -17,6 +18,7 @@ z=[]
 maximos=[]
 minimos=[]
 Bits_Precision=[]
+mjs=[]
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
@@ -44,12 +46,12 @@ def ImprimeArreglos():
 	for i in range(len(sa_w)):
 		print sa_w[i].get(),
 	print ""
+	print "EN SIGNOS: "
+	print signo
 	print "EN INDEPENDIENTE: "
 	for i in range(len(igual)):
 		print igual[i].get(),
 	print ""
-	print "EN SIGNOS: "
-	print signo
 	print "Funcion objetivo"
 	for i in range(len(z)):
 		print z[i].get(),
@@ -62,6 +64,10 @@ def ImprimeArreglos():
 	print "En maximos"
 	for i in range(len(maximos)):
 		print maximos[i]
+	print ""
+	print "En MJS"
+	for i in range(len(mjs)):
+		print mjs[i]
 	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
@@ -98,9 +104,16 @@ def Maximizar():
 		if z[i].get()!="":
 			minimos.append(Minimo(i))
 			maximos.append(Maximo(i))
+			mjs.append(Calcula_mj(i,minimos[i],maximos[i]))
 	ImprimeArreglos()
 	
 
+def Calcula_mj(idVariable,minimo,maximo):
+	print "minimo: ",minimo,
+	print "maximo: ",maximo
+	aux=maximo-minimo
+	aux*=10**int(Bits_Precision[0].get())
+	return round(math.log(aux)/math.log(2))
 
 
 def Maximo(idVariable):
@@ -122,6 +135,7 @@ def Maximo(idVariable):
 			if int(sa_v[i].get())>=maximo:
 				maximo=int(sa_v[i].get())
 	return maximo
+
 def Minimo(idVariable):
 	minimo=99999
 	if idVariable==0:
