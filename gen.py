@@ -23,6 +23,20 @@ tkvar.set('=')
 
 
 def Minimizar():
+	otra_ventana=tk.Toplevel()
+	vent=tk.Frame(otra_ventana)
+	raiz.withdraw()
+	vent.grid(column=0, row=0,padx=(50,50), pady=(10,10))
+	vent.columnconfigure(0,weight=1)
+	vent.rowconfigure(0,weight=1)
+	Label_x=tk.Label(vent,text="X+")
+	Label_x.grid(column=1,row=1)
+	
+
+	otra_ventana.mainloop()
+	#vs=tk.Frame(otra_ventana)
+	
+
 
 	for i in range(len(sa_x)):
 		print sa_x[i].get(),
