@@ -29,8 +29,8 @@ def Minimizar():
 	vent.grid(column=0, row=0,padx=(50,50), pady=(10,10))
 	vent.columnconfigure(0,weight=1)
 	vent.rowconfigure(0,weight=1)
-	Label_x=tk.Label(vent,text="X+")
-	Label_x.grid(column=1,row=1)
+	Boton_salir=tk.Button(vent,text="Salir", command=fin)
+	Boton_salir.grid(column=1,row=1)
 	
 
 	otra_ventana.mainloop()
@@ -64,6 +64,9 @@ def Minimizar():
 	#print igual
 	#print signo
 
+
+def fin():
+	raiz.destroy()
 
 def agrega_condicion():
 	global tkvar
