@@ -17,9 +17,7 @@ z=[]
 
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
-tkvar=tk.StringVar(raiz)
-choices={'>=','<=','='}
-tkvar.set('=')
+
 
 
 
@@ -115,7 +113,9 @@ def agrega_condicion():
 			##print sa_x[1].get()
 			
 			
-
+			tkvar=tk.StringVar(raiz)
+			choices={'>=','<=','='}
+			tkvar.set('=')
 			popupMenu=tk.OptionMenu(vp,tkvar,*choices)
 			popupMenu.grid(column=10, row=numCondiciones)
 			tkvar.trace('w', change_drop)
