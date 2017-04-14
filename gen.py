@@ -129,10 +129,11 @@ maximos=[]
 minimos=[]
 
 """
-Se guarda el numero de bits de precicion
+Se guarda el numero de bits de precicion y las iteraciones que se van a hacer
 ES UNA CADENA
 """
 Bits_Precision=[]
+Itera=[]
 
 """
 Aqui es en donde se especifica en NUMERO DE BITS que debe tener la poblacion,
@@ -800,13 +801,13 @@ Text_v.grid(column=11,row=2)
 #botones
 contador.set(4)
 boton_Agregar=tk.Button(vp,text="Agregar", command=agrega_condicion)
-boton_Agregar.grid(column=1,row=11)
+boton_Agregar.grid(column=1,row=12)
 
 boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
-boton_Min.grid(column=2, row=11)
+boton_Min.grid(column=2, row=12)
 
 boton_Max=tk.Button(vp,text="Maximizar", command=Maximizar)
-boton_Max.grid(column=3, row=11)
+boton_Max.grid(column=3, row=12)
 
 
 
@@ -824,6 +825,16 @@ bits=tk.StringVar()
 Bits_Precision.append(bits)
 Text_Bits=tk.Entry(vp,width=6,textvariable=bits)
 Text_Bits.grid(column=3,row=10)
+
+
+#numero de iteraciones
+#bits de precision
+Label_itera=tk.Label(vp,text="Numero de iteraciones: ")
+Label_itera.grid(column=1, row=11, columnspan=2)
+itera=tk.StringVar()
+Itera.append(itera)
+Text_itera=tk.Entry(vp,width=6,textvariable=itera)
+Text_itera.grid(column=3,row=11)
 
 raiz.mainloop()
 
