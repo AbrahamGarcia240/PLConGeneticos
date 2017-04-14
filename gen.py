@@ -26,6 +26,7 @@ signo=["" for x in range(5)]
 z=[]
 maximos=[]
 minimos=[]
+Itera=[]
 Bits_Precision=[]
 mjs=[]
 poblacion=[]
@@ -181,7 +182,7 @@ def Maximizar():
 
 def SegundaSeleccion(idVector):
 	acumulador=0
-	ordenados=z_acumulado
+	ordenados=porcentaje_z
 	ordenados.sort()
 	print ordenados[3],
 	print "<",
@@ -203,8 +204,8 @@ def SegundaSeleccion(idVector):
 			acumulador=ordenados[0]
 		#ahora que se dentro de que rango esta, busco a que vector corresponde
 		#el valor de acumulador
-		for i in range(len(z_acumulado)):
-			if z_acumulado[i]==acumulador:
+		for i in range(len(porcentaje_z)):
+			if porcentaje_z[i]==acumulador:
 				veredicto[idVector]=i
 
 def Aleatorios():
@@ -565,13 +566,13 @@ Text_v.grid(column=11,row=2)
 #botones
 contador.set(4)
 boton_Agregar=tk.Button(vp,text="Agregar", command=agrega_condicion)
-boton_Agregar.grid(column=1,row=11)
+boton_Agregar.grid(column=1,row=12)
 
 boton_Min=tk.Button(vp,text="Minimizar", command=Minimizar)
-boton_Min.grid(column=2, row=11)
+boton_Min.grid(column=2, row=12)
 
 boton_Max=tk.Button(vp,text="Maximizar", command=Maximizar)
-boton_Max.grid(column=3, row=11)
+boton_Max.grid(column=3, row=12)
 
 
 
@@ -582,6 +583,8 @@ Label_Texto.grid(column=1, row=2, columnspan=2)
 Label_Texto=tk.Label(vp,text="Calculadora de algoritmos geneticos V1.0")
 Label_Texto.grid(column=5, row=1, columnspan=6)
 
+
+
 #bits de precision
 Label_Bits=tk.Label(vp,text="Numero de bits de precision: ")
 Label_Bits.grid(column=1, row=10, columnspan=2)
@@ -590,6 +593,14 @@ Bits_Precision.append(bits)
 Text_Bits=tk.Entry(vp,width=6,textvariable=bits)
 Text_Bits.grid(column=3,row=10)
 
+
+#numero de iteraciones
+Label_itera=tk.Label(vp,text="Numero de iteraciones: ")
+Label_itera.grid(column=1, row=11, columnspan=2)
+itera=tk.StringVar()
+Itera.append(itera)
+Text_itera=tk.Entry(vp,width=6,textvariable=itera)
+Text_itera.grid(column=3,row=11)
 raiz.mainloop()
 
 
