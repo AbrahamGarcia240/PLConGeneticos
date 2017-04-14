@@ -368,7 +368,7 @@ Para esto lo que hace es lo siguiente
 """
 def SegundaSeleccion(idVector):
 	acumulador=0
-	ordenados=z_acumulado
+	ordenados=porcentaje_z
 	ordenados.sort()
 	print ordenados[3],
 	print "<",
@@ -390,8 +390,8 @@ def SegundaSeleccion(idVector):
 			acumulador=ordenados[0]
 		#ahora que se dentro de que rango esta, busco a que vector corresponde
 		#el valor de acumulador
-		for i in range(len(z_acumulado)):
-			if z_acumulado[i]==acumulador:
+		for i in range(len(porcentaje_z)):
+			if porcentaje_z[i]==acumulador:
 				veredicto[idVector]=i
 
 """
