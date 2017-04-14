@@ -31,7 +31,7 @@ sa_y=[]
 sa_v=[]
 sa_w=[]
 igual=[]
-signo=["" for x in range(5)]
+signo=["" for x in range(9)]
 
 """
 En la lista "z" se guardan los coeficientes de la funcion objetivo, por ejemplo:
@@ -270,6 +270,10 @@ def ImprimeArreglos():
 	print "Nueva poblacion"
 	for i in range(len(veredicto)):
 		print veredicto[i]
+	print ""
+	print "Numero de iteraciones"
+	for i in range(len(Itera)):
+		print Itera[i].get()
 	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
@@ -684,7 +688,7 @@ def agrega_condicion():
 		contador.set(contador.get()+1)
 		numCondiciones=contador.get()
 
-		if numCondiciones<10:
+		if numCondiciones<14:
 			Label_x=tk.Label(vp,text="X+")
 			Label_x.grid(column=6, row=numCondiciones)
 
