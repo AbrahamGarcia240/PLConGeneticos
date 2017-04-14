@@ -8,37 +8,188 @@ import math
 import random
 
 
-#variables globales
+#variables globales, 
+"""
+Las variables sa_ guardan  el valor por el que se multiplica a cada variable del problema, por
+ejemplo, si el problema esta sujeto a:
+
+3X+2y<=5
+2x-y<=20
+
+En sa_x se guarda [3,2]; en sa_y se guarda[2,1]
+
+En signo se guarara [<=,<=]
+
+En igual se guardara [5,20]
+
+
+TODOS ESTOS DATOS SON CADENAS, PARA PASARLOS A ENTERO HACER
+int(sa_x[i])
+"""
 sa_x=[]
 sa_y=[]
 sa_v=[]
 sa_w=[]
+igual=[]
+signo=["" for x in range(5)]
+
+"""
+En la lista "z" se guardan los coeficientes de la funcion objetivo, por ejemplo:
+Minimizar 3X+2Y-9W+2V
+
+Se guarda en z=[3,2,-9,2]
+TODOS ESTOS DATOS SON CADENAS
+
+"""
+z=[]
+
+"""
+En la tabla a mostrar al usuario se deben ver los siguientes datos
+	-valor respuesta de X
+	-valor respuesta de Y
+	-valor respuesta de W
+	-valor respuesta de V
+	-Funcion objetivo evaluada en los valores anteriores
+
+Estos datos coinciden las variables de abajo. 
+z_entabla tiene un valor extra ya que es la sumatoria de todos los elementos que la componen
+
+SI z_entabla=[3,2,1,0] su ultimo elemento es 3+2+1+0=6
+z_entabla[3,2,1,0,6]
+
+
+TODOS ESTOS DATOS SON CADENAS
+
+"""
 x_entabla=[0,0,0,0]
 y_entabla=[0,0,0,0]
 w_entabla=[0,0,0,0]
 v_entabla=[0,0,0,0]
 z_entabla=[0,0,0,0,0]
+
+"""
+La variable porcentaje_z esta dada por:
+	z_entabla[i]/z_entabla[4], 
+Es la probabilidad de que suceda Z (asi viene en sus diapostivas :s)
+
+La variable aleatorios_tabla sirve para almacenar cuatro numeros aleatorios entre 0 y 1
+
+TODOS ESTOS DATOS SON CADENAS
+"""
 porcentaje_z=[0,0,0,0]
 aleatorios_tabla=[0,0,0,0]
+
+"""
+z_acumulado es la sumatoria en zigzag, esta dada por:
+	z_acumulado[i]=z_acumulado[i-1]+porcentaje_z[i]	
+TODOS ESTOS DATOS SON CADENAS
+
+"""
 z_acumulado=[0,0,0,0]
-igual=[]
-signo=["" for x in range(5)]
-z=[]
+
+"""
+Veredicto es una lista DE CADENAS (strings) que guarda el numero de vectores que sobreviven
+Por ejemplo, si solo sobreviven los vectores 2 y 3, debera ser algo similar a:
+
+[2,2,3,2] 
+
+Con que una sola vez se encuentre el identificador, quiere decir que el vector sobrevive, por ejemplo
+
+[1,3,2,2] 
+
+Sobreviven 1,3,2 para la sigiente iteracion
+
+
+Si para este vector, no se cumplio ningun cirterio, se pone "Hijo/Mutacion", por ejemplo
+
+[0,Hijo/MUtacion,2,0]
+
+En este caso sobreviven solo los vectores 0 y 2, siendo asi, se debera generar dos nuevos
+vectores, uno para el '0' repetido y otro para el 'Hijo/Mutacion; estos se generaran a partir
+de 0 y 2
+
+SON CADENAS
+"""
+
+veredicto=[0,0,0,0]
+
+"""
+Para el calculo de "mjs" es necesario saber los valores minimos y maximos que podra
+tener cada variable, por ejemplo:
+
+3<=X<=9
+0<=Y<=10
+
+En este caso en maximos se guarda -----> [9,10]
+y en minimos ---------> [0,3]
+
+SON CADENAS
+"""
 maximos=[]
 minimos=[]
+
+"""
+Se guarda el numero de bits de precicion
+ES UNA CADENA
+"""
 Bits_Precision=[]
+
+"""
+Aqui es en donde se especifica en NUMERO DE BITS que debe tener la poblacion,
+
+si X requiere 3 bits
+Y requiere 9 bits
+W necesita 8 bits
+V necesota 10 bits
+
+EL valor mjs es:
+
+[3,9,8,10]
+
+ES IMPORTANTE NO MODIFICARLA NUNCA, SON CADENAS, PARA USARLAS COMO ENTEROS, USAR
+
+int(mjs[i])
+"""
 mjs=[]
+
+"""
+Aqui es en donde se guardan las poblaciones de bits. CON CADA ITERACION SE DEBEN
+MODIFICAR LOS VALORES, ejemplo:
+
+ITERACION 1 (notese que siempre tienen el mismo tamano, ya que todos cumplen
+con el numero de bits especificado por iteracion en mjs)
+
+[0101,0010,0000,1111]
+
+Se obtiene que sobreviven los vectores 0 y 2, por lo que los vectores 1 y 3 se modifican
+
+[0101, 1000, 0000, 1110]
+
+Para editarlos, basta con usar poblacion[i]=UNA CADENA
+"""
 poblacion=[]
 
+###################################### NO MOVERLE ########################################
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
+###########################################################################################
 
 
+"""
+	Esta funcion editarla al final, lo unico que tiene que hacer es
+	cambiar Z=-Z (el arreglo) y mandar a llamar a Maximizar
 
-
+	El resultado imprimirlo como -MAXIMIZAR
+"""
 def Minimizar():
 	print "hola"
 
+
+
+"""
+	Solo sirve para ver que lo que estas haciendo va bien
+	unicamente imprime los arreglos
+"""
 def ImprimeArreglos():
 	print "EN X: "
 	for i in range(len(sa_x)):
@@ -115,45 +266,68 @@ def ImprimeArreglos():
 	for i in range(len(aleatorios_tabla)):
 		print aleatorios_tabla[i]
 	print ""
+	print "Nueva poblacion"
+	for i in range(len(veredicto)):
+		print veredicto[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
 	print ""
 
-	#print sa_y
-	#print sa_v
-	#print sa_w
-	#print igual
-	#print signo
 
 def Maximizar():
 	############INICIO ALGORITMO################
 	#Obtengo los maximos y minimos de cada variable asi como sus mjs
-	for i in range(len(z)):
-		if z[i].get()!="":
-			minimos.append(Minimo(i))
-			maximos.append(Maximo(i))
-			mjs.append(Calcula_mj(minimos[i],maximos[i]))
+	for i in range(len(z)): #para cada variable en la funcion objetivo
+		if z[i].get()!="": # No tomes en cuenta las variables que estan vacias en la funcion objetivo
+			minimos.append(Minimo(i)) #obten el minimo de la variable
+			maximos.append(Maximo(i)) #obten el maximo de la variable 
+			mjs.append(Calcula_mj(minimos[i],maximos[i])) #obtener cuantos bits debe tener la poblacion por culpa de esa variable
 	
-	#creo 4 vectores de poblacion
+	############################ AQUI INICIARIA LA ITERACION N ################################################
+	for i in range(4): #Creo 4 vectores de poblacion
+		"""
+			En las siguientes iteraciones, en lugar de crear nuevos vectores y usar append
+			se va a hacer
+
+			poblacion[i]=Cruza(Num_de_vector1,Num_de_vector2)
+
+			O en su defecto
+
+			poblacion[i]=Mutacion(Num_de_vector1)
+		"""
+		poblacion.append(NuevoVector()) ##Creo un nuevo vector que tenga el tamano de todas las mjs
+		SeleccionNatural(i) ##Antes de aceptarlo, veo que cumpla con las condiciones (s.a.)
+
+	"""
+	Ahora que ya tengo vectores que cumplen con las condicions (s.a), empiezo a llenar la tabla
+	(ver tus apuntes)
 	
-	for i in range(4):
-		poblacion.append(NuevoVector())
-		SeleccionNatural(i) ##i
+	En este caso empiezo con las variables X,Y,W,V pero con su valor real, el cual se obtiene de_
 
-	#obtengo los valores de los vectores que sobrevivieron para la tabla
-	for i in range(4):
-		Variable_enTabla(i)
-		Evalua_Z_enTabla(i)
+	min+decimal(CADENA BINARA)*(maximo-minimo)(2**mjs-1)
 
-	Sumatoria_Z()
-	Porcientos()
-	AcumulativoZ()
-	Aleatorios()
-	#Comienzo a llenar la tabla
+	"""
+	for i in range(4): #Para cada vector
+		Variable_enTabla(i) #Obtengo los valores X,Y.W.V que genera dicho vector
+		Evalua_Z_enTabla(i) #Evaluo los valores anteriores en la funcion objetivo y tengo Z
 
-	ImprimeArreglos()
+	Sumatoria_Z() #Hago la sumatoria en z
+	Porcientos() #Saco los porcentajes
+	AcumulativoZ() #Hago el zig zag de la tabla 
+	Aleatorios() #Genero cuatro numeros aleatorios de 0 a 1
+	for i in range(4): #Para cada vector de la poblacion
+		SegundaSeleccion(i) #Checo cuales vectores sobreviven para mutaciones y cruzas y cuales no
+	ImprimeArreglos()#Imprimo los valores que llevo hasta el momento
+	"""
+		Faltaria por agregar las mutaciones y las cruzas
+	"""
+####################################################AQUI TERMINARIA LA ITERACION ################################3
 
+	"""
+	Esto es lo que dibuja la tabla (hasta antes de "def SegundaSeleccion")
+	"""
 	#OBTENER VALOR DE Z PARA LA TABLA
 
 	#Configuraciones basicas
@@ -172,15 +346,70 @@ def Maximizar():
 	Tabla.grid(column=1, row=3)
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
+"""
+Esta funcion verifica que es lo que sucedera en la siguiente iteracion con el vector
+en la posicion idVector, Pueden suceder tres cosas
 
+	1.- Se queda el valor del vector actual
+	2.- Se cambia por una mutacion o un  hijo
+
+Para esto lo que hace es lo siguiente
+	1.-Ordena los porcentajes de Z de menor a mayor
+	2.- Checa si el aleatorio que se genero para el vector entra dentro del rango
+		de posibles valores
+			1.- Si es asi, checa en que rango entra, por lo tanto elije
+				el %z mayor inmediato y pone su identificador en la lista
+				veredicto. Es decir que si el mayor inmediato del vector actual es el
+				2, entonces veredicto[idVector]=2
+			2.- Si no hay un mayor inmediato, entonces senala que se debe hacer
+				una mutacion o un hijo
+
+"""
+def SegundaSeleccion(idVector):
+	acumulador=0
+	ordenados=z_acumulado
+	ordenados.sort()
+	print ordenados[3],
+	print "<",
+	print aleatorios_tabla[idVector]
+	if ordenados[3]<aleatorios_tabla[idVector]:
+		veredicto[idVector]="Hijo/Mutacion"
+	else:
+		#Buscar dentro de que rango esta el aleatorio y guardar el valor del rango
+		"""
+			Si el mayor inmediato es 0.9 entonces guarda en acumulador 0.9
+		"""
+		if aleatorios_tabla[idVector]<ordenados[3]:
+			acumulador=ordenados[3]
+		if aleatorios_tabla[idVector]<ordenados[2]:
+			acumulador=ordenados[2]
+		if aleatorios_tabla[idVector]<ordenados[1]:
+			acumulador=ordenados[1]
+		if aleatorios_tabla[idVector]<ordenados[0]:
+			acumulador=ordenados[0]
+		#ahora que se dentro de que rango esta, busco a que vector corresponde
+		#el valor de acumulador
+		for i in range(len(z_acumulado)):
+			if z_acumulado[i]==acumulador:
+				veredicto[idVector]=i
+
+"""
+	Genero 4 numeros aleatorios del 0 al 1
+"""
 def Aleatorios():
 	for i in range(4):
 		aleatorios_tabla[i]=random.uniform(0, 1)
+
+"""
+	Hace la operacion en sigsag (ver apuntes del cuaderno para calcular %Za cuum)
+"""
 
 def AcumulativoZ():
 	z_acumulado[0]=0
 	for i in range(1,4):
 		z_acumulado[i]=z_acumulado[i-1]+porcentaje_z[i]
+
+
 
 def Porcientos():
 	for i in range(4):
