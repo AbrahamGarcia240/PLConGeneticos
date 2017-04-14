@@ -17,6 +17,7 @@ x_entabla=[0,0,0,0]
 y_entabla=[0,0,0,0]
 w_entabla=[0,0,0,0]
 v_entabla=[0,0,0,0]
+z_entabla=[0,0,0,0]
 igual=[]
 signo=["" for x in range(5)]
 z=[]
@@ -95,6 +96,10 @@ def ImprimeArreglos():
 	for i in range(len(v_entabla)):
 		print v_entabla[i]
 	print ""
+	print "En Tabla z"
+	for i in range(len(z_entabla)):
+		print z_entabla[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -124,9 +129,10 @@ def Maximizar():
 	#obtengo los valores de los vectores que sobrevivieron para la tabla
 	for i in range(4):
 		Variable_enTabla(i)
-
+		Evalua_Z_enTabla(i)
 	ImprimeArreglos()
-	#Los vectores que estan aqui son aptos para continuar
+
+	#OBTENER VALOR DE Z PARA LA TABLA
 
 	#Configuraciones basicas
 	otra_ventana=tk.Toplevel()
@@ -145,7 +151,22 @@ def Maximizar():
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 	
-	
+
+def Evalua_Z_enTabla(idVector):
+	acumulador=0
+	if z[0].get()!="":
+		#print x_entabla[idVector]
+		acumulador+=int(z[0].get())*float(x_entabla[idVector])
+	if z[1].get()!="":
+		#print z[1].get()
+		acumulador+=int(z[1].get())*float(y_entabla[idVector])
+	if z[2].get()!="":
+		#print z[2].get()
+		acumulador+=int(z[2].get())*float(w_entabla[idVector])
+	if z[3].get()!="":
+		#print z[3].get()
+		acumulador+=int(z[3].get())*float(v_entabla[idVector])
+	z_entabla[idVector]=acumulador
 
 def Variable_enTabla(idVector):
 	strings=[]
