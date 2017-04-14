@@ -17,7 +17,9 @@ x_entabla=[0,0,0,0]
 y_entabla=[0,0,0,0]
 w_entabla=[0,0,0,0]
 v_entabla=[0,0,0,0]
-z_entabla=[0,0,0,0]
+z_entabla=[0,0,0,0,0]
+porcentaje_z=[0,0,0,0]
+z_acumulado=[0,0,0,0]
 igual=[]
 signo=["" for x in range(5)]
 z=[]
@@ -100,6 +102,14 @@ def ImprimeArreglos():
 	for i in range(len(z_entabla)):
 		print z_entabla[i]
 	print ""
+	print "Porcentaje en z"
+	for i in range(len(porcentaje_z)):
+		print porcentaje_z[i]
+	print ""
+	print "Z acumulativo"
+	for i in range(len(z_acumulado)):
+		print z_acumulado[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -130,6 +140,12 @@ def Maximizar():
 	for i in range(4):
 		Variable_enTabla(i)
 		Evalua_Z_enTabla(i)
+
+	Sumatoria_Z()
+	Porcientos()
+	AcumulativoZ()
+	#Comienzo a llenar la tabla
+
 	ImprimeArreglos()
 
 	#OBTENER VALOR DE Z PARA LA TABLA
@@ -150,7 +166,22 @@ def Maximizar():
 	Tabla.grid(column=1, row=3)
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
-	
+
+
+def AcumulativoZ():
+	z_acumulado[0]=0
+	for i in range(1,4):
+		z_acumulado[i]=z_acumulado[i-1]+porcentaje_z[i]
+
+def Porcientos():
+	for i in range(4):
+		porcentaje_z[i]=float(z_entabla[i])/float(z_entabla[4])
+
+def Sumatoria_Z():
+	acumulador=0
+	for i in range(len(z_entabla)-1):
+		acumulador+=float(z_entabla[i])
+	z_entabla[4]=acumulador
 
 def Evalua_Z_enTabla(idVector):
 	acumulador=0
