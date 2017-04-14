@@ -19,6 +19,7 @@ w_entabla=[0,0,0,0]
 v_entabla=[0,0,0,0]
 z_entabla=[0,0,0,0,0]
 porcentaje_z=[0,0,0,0]
+aleatorios_tabla=[0,0,0,0]
 z_acumulado=[0,0,0,0]
 igual=[]
 signo=["" for x in range(5)]
@@ -110,6 +111,10 @@ def ImprimeArreglos():
 	for i in range(len(z_acumulado)):
 		print z_acumulado[i]
 	print ""
+	print "Aleatorios"
+	for i in range(len(aleatorios_tabla)):
+		print aleatorios_tabla[i]
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -144,6 +149,7 @@ def Maximizar():
 	Sumatoria_Z()
 	Porcientos()
 	AcumulativoZ()
+	Aleatorios()
 	#Comienzo a llenar la tabla
 
 	ImprimeArreglos()
@@ -167,6 +173,9 @@ def Maximizar():
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 
+def Aleatorios():
+	for i in range(4):
+		aleatorios_tabla[i]=random.uniform(0, 1)
 
 def AcumulativoZ():
 	z_acumulado[0]=0
