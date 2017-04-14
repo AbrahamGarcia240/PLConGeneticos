@@ -22,7 +22,7 @@ porcentaje_z=[0,0,0,0]
 aleatorios_tabla=[0,0,0,0]
 z_acumulado=[0,0,0,0]
 igual=[]
-signo=["" for x in range(5)]
+signo=["" for x in range(9)]
 z=[]
 maximos=[]
 minimos=[]
@@ -117,10 +117,14 @@ def ImprimeArreglos():
 	for i in range(len(aleatorios_tabla)):
 		print aleatorios_tabla[i]
 	print ""
-	print ""
 	print "Nueva poblacion"
 	for i in range(len(veredicto)):
 		print veredicto[i]
+	print ""
+	print "Numero de iteraciones"
+	for i in range(len(Itera)):
+		print Itera[i].get()
+	print ""
 	print "Numero de bits de precision"
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
@@ -449,7 +453,7 @@ def agrega_condicion():
 		contador.set(contador.get()+1)
 		numCondiciones=contador.get()
 
-		if numCondiciones<10:
+		if numCondiciones<14:
 			Label_x=tk.Label(vp,text="X+")
 			Label_x.grid(column=6, row=numCondiciones)
 
