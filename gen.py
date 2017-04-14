@@ -409,23 +409,37 @@ def AcumulativoZ():
 	for i in range(1,4):
 		z_acumulado[i]=z_acumulado[i-1]+porcentaje_z[i]
 
+"""
+	Realiza la division del valor de z en el vector entre la sumatoria de valores
+	en z
 
+"""
 
 def Porcientos():
 	for i in range(4):
 		porcentaje_z[i]=float(z_entabla[i])/float(z_entabla[4])
 
+
+"""
+	Suma todos los valores de z y lo guarda en la posicion 4
+"""
 def Sumatoria_Z():
 	acumulador=0
 	for i in range(len(z_entabla)-1):
 		acumulador+=float(z_entabla[i])
 	z_entabla[4]=acumulador
 
+"""
+	Usando los coficientes de la funcion objetivo, evalua los valores del vector 
+	para obtener el resultado de z
+"""	
+
 def Evalua_Z_enTabla(idVector):
-	acumulador=0
-	if z[0].get()!="":
+	acumulador=0 #el valor de z
+	if z[0].get()!="": #verifico si la variable x esta en la funcion objetivo
 		#print x_entabla[idVector]
-		acumulador+=int(z[0].get())*float(x_entabla[idVector])
+		acumulador+=int(z[0].get())*float(x_entabla[idVector]) #coeficiente*valor en x
+	#LO MISMO EN LOS DEMAS CASOS
 	if z[1].get()!="":
 		#print z[1].get()
 		acumulador+=int(z[1].get())*float(y_entabla[idVector])
@@ -437,7 +451,20 @@ def Evalua_Z_enTabla(idVector):
 		acumulador+=int(z[3].get())*float(v_entabla[idVector])
 	z_entabla[idVector]=acumulador
 
+"""
+	Esta funcion hace la operacion descrita en tus apuntes como:
+
+	min+decimal(CADENA BINARIA)(algo/algo)
+
+	Segun el vector que se le de, dara los valores reales para
+	X Y W V
+"""
 def Variable_enTabla(idVector):
+	##################### DEL VECTOR OBTIENE LAS PARTES X Y W V ##################
+	"""
+	Si el vector [00110011], esta parte devuelve x=00 y==11 w=00 v=11
+	Con base en el tamano que se le otorgo en mjs 
+	"""
 	strings=[]
 	acumulador=0
 	for i in range(len(z)):
@@ -445,6 +472,8 @@ def Variable_enTabla(idVector):
 			#obtener x,y,w,v del vector
 			strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
 			acumulador+=int(mjs[i])
+	##############################################################################
+	# verifico que exista la variable, ya sea x,y,v o w, si existe hago el calculo
 	if len(minimos)>0 and len(strings)>0 and len(maximos)>0 and len(mjs)>0:
 		x_entabla[idVector]=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
 	if len(minimos)>1 and len(strings)>1 and len(maximos)>1 and len(mjs)>1:
@@ -454,12 +483,21 @@ def Variable_enTabla(idVector):
 	if len(minimos)>3 and len(strings)>3 and len(maximos)>3 and len(mjs)>3:
 		v_entabla[idVector]=float(minimos[3])+int(strings[3],2)*((float(maximos[3])-float(minimos[3])))/(2**int(mjs[3])-1)
 
-
+"""
+	Esa funcion evalua un vector para saber si es apto o no,
+	si es apto, lo deja en su posicion, si no, manda a llamar a la funcion
+	que crea vectores para pedirle uno nuevo
+"""
 
 def SeleccionNatural(idVector):
-	vivio=0
-	while not vivio==len(igual):
+	vivio=0 # numero de condiciones que ha cumplido el vector con id idVector
+	while not vivio==len(igual): #mientras que el vector no cumpla todas las condiciones
 		vivio=0
+		##################### DEL VECTOR OBTIENE LAS PARTES X Y W V ##################
+		"""
+		Si el vector [00110011], esta parte devuelve x=00 y==11 w=00 v=11
+		Con base en el tamano que se le otorgo en mjs 
+		"""
 		strings=[]
 		acumulador=0
 		#print poblacion[idVector]
@@ -468,24 +506,23 @@ def SeleccionNatural(idVector):
 				#obtener x,y,w,v del vector
 				strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
 				acumulador+=int(mjs[i])
-		#print "Variables",
-		#print strings
+		################################################################################
 
-		sobrevive=0
-		valor=0
-		for i in range(len(igual)):
+		sobrevive=0 #para saber si sobrevive a la i-esima condicion
+		valor=0 #lo que vale la ecuacion s.a. 
+		for i in range(len(igual)): #por cada condicion
 			#evaluo el polinomio
-			if len(strings)>0:
-				#print "entre a 0"
+			if len(strings)>0: #si hay cromosomas dentro del vector que pertenecen a x
+				# si la variable x si existe
 				if sa_x[i].get()!="" and strings[0]!="" and minimos[0]!="" and mjs[0]!="":
 					#print  int(sa_x[i].get()),
 					#print "*",
 					#print  int(strings[0],2)
-
+					#evalua (pero con el valor de min+decimal(CADENA BINARIA)*(algo/algo))
 					valor_procedimiento=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
-					#print "valor procedimiento:",
-					#print valor_procedimiento
-					valor+=int(sa_x[i].get())*valor_procedimiento
+					#coeficiente*variable ya evaluada
+					valor+=int(sa_x[i].get())*valor_procedimiento #se suma al resultado del polinomio
+			########## REPETIR CON LOS DEMAS
 			if len(strings)>1:
 				#print "entre a 1"
 				if sa_y[i].get()!="" and strings[1]!="" and minimos[1]!="" and mjs[1]!="":
@@ -524,60 +561,63 @@ def SeleccionNatural(idVector):
 				#print signo[i],
 				#print igual[i].get()
 				if valor <= int(igual[i].get()):
-					sobrevive=1
+					sobrevive=1 ##cumple con la condicion
 			elif signo[i]==">=":
 				#print signo[i],
 				#print igual[i].get()
 				if valor>=int(igual[i].get()):
-					sobrevive=1
+					sobrevive=1 #cumple con la conficion
 			else:
 				#print signo[i],
 				#print igual[i].get()
 				if valor==int(igual[i].get()):
-					sobrevive=1
+					sobrevive=1 #cumple con la conficion
 			if sobrevive==1:
 				#print "sobrevive"
-				sobrevive=0
-				vivio+=1
+				sobrevive=0 #reinicio para que evalue la siguiente condicion
+				vivio+=1 #ya sobrevivio a una de las n condiciones
 			else:
 				break
 				#print "muere!"
 
-		if vivio==len(igual):
+		if vivio==len(igual): #si sobrevivio a todas las condiciones, entonces es apto
 			return poblacion[idVector]
-		else:
+		else: # matalo y crea otro vector, esto sige dentro del while, asi que repite el proceso
 			poblacion[idVector]=NuevoVector()
-	
+"""
+	Crea un nuevo vector con numeros aleatorios y lo guarda en poblacion
+"""	
 
 def NuevoVector():
 	aux=0
 	vector=[]
-
-	for i in range(len(z)):
+	for i in range(len(z)): #por cada variable que exista en la funcion objetivo
 		if z[i].get()!="":
 			#print "mjs: ",
 			#print mjs[i]
-			aux=random.randrange((2**int(mjs[i])))
+			aux=random.randrange((2**int(mjs[i]))) ##crea un numero aleatorio que quepa en mjs digitos
 			#print "Aux",
 			#print bin(aux)[2:]
-			if len(bin(aux)[2:])!=int(mjs[i]):
+			if len(bin(aux)[2:])!=int(mjs[i]): #si el numero en binario tiene menos bits de los necesarios, llena la cadena con ceros
 				#print "entre"
 				ceros=int(mjs[i])-len(bin(aux)[2:])
 				for l in range(ceros):
 					vector.append("0")
 			vector.append(bin(aux)[2:])
-	string_vector=''.join(vector)
+	string_vector=''.join(vector) # junta los ceros con el valor
+	"""
+		Por ejemplo si mjs=[2,3,4,9]
+		x genera el numero 1 que en binario es 1 y requiere un cero -->01
+		y genera el numero 4 que en binario 100, no requiere ceros --->100
+		w genera el numero 3 que en binario es 11, requiere dos ceros-->0011
+		w genera el 7 que en binario es 111, requiere seis ceros--->000000111
+
+		Al hacer join la cadena es 01100001100000011 y se regresa como resultado
+	"""
 	return string_vector
-	#print "Nuevo vector",
-	
-	#print vector
 
-	#for i in range(len(vector)):
-	#	print vector[i],
-	#print ""
-	#primero genero un numero aleatorio por cada variable
 	
-
+################################################ NO MOVERLE DE AQUI PARA ABAJO ######################################
 
 def Calcula_mj(minimo,maximo):
 	aux=maximo-minimo
