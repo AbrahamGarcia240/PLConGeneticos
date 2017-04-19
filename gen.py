@@ -186,7 +186,7 @@ def Maximizar():
 
 def SegundaSeleccion(idVector):
 	acumulador=0
-	ordenados=porcentaje_z
+	ordenados=z_acumulado
 	ordenados.sort()
 	print ordenados[3],
 	print "<",
@@ -208,8 +208,8 @@ def SegundaSeleccion(idVector):
 			acumulador=ordenados[0]
 		#ahora que se dentro de que rango esta, busco a que vector corresponde
 		#el valor de acumulador
-		for i in range(len(porcentaje_z)):
-			if porcentaje_z[i]==acumulador:
+		for i in range(len(z_acumulado)):
+			if z_acumulado[i]==acumulador:
 				veredicto[idVector]=i
 
 def Aleatorios():
@@ -217,7 +217,7 @@ def Aleatorios():
 		aleatorios_tabla[i]=random.uniform(0, 1)
 
 def AcumulativoZ():
-	z_acumulado[0]=0
+	z_acumulado[0]=porcentaje_z[0]
 	for i in range(1,4):
 		z_acumulado[i]=z_acumulado[i-1]+porcentaje_z[i]
 
