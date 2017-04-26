@@ -368,19 +368,7 @@ def Maximizar():
 	
 
 
-def obtieneResultado():
-	menor=99999
-	id=0
-	for i in range(len(z_entabla)):
-		if(int(z_entabla[i])<menor):
-			id=i
-			menor=int(z_entabla[i])
 
-	
-	resultado.append(x_entabla[id])
-	resultado.append(y_entabla[id])
-	resultado.append(w_entabla[id])
-	resultado.append(v_entabla[id])
 
 	"""
 	Esto es lo que dibuja la tabla (hasta antes de "def SegundaSeleccion")
@@ -421,16 +409,16 @@ def obtieneResultado():
 	Label_FuncionObjetivo=tk.Label(vent,text=stringObjetivo)
 	Label_FuncionObjetivo.grid(column=3, row=0)
 
-	Label_FuncionTexto=tk.Label(vent,text="Funcion Objetivo:")
-	Label_FuncionTexto.grid(column=0, row=0,columnspan=2)
+	Label_FuncionTexto=tk.Label(vent,text="Funcion Objetivo: Z="+str(resultado[0]))
+	Label_FuncionTexto.grid(column=0, row=0,columnspan=3)
 
-	Label_XRes=tk.Label(vent,text="X="+str(resultado[0]))
+	Label_XRes=tk.Label(vent,text="X="+str(resultado[1]))
 	Label_XRes.grid(column=1, row=1)
-	Label_YRes=tk.Label(vent,text="Y="+str (resultado[1]))
+	Label_YRes=tk.Label(vent,text="Y="+str (resultado[2]))
 	Label_YRes.grid(column=2, row=1)
-	Label_WRes=tk.Label(vent,text="W="+str (resultado[2]))
+	Label_WRes=tk.Label(vent,text="W="+str (resultado[3]))
 	Label_WRes.grid(column=3, row=1)
-	Label_VRes=tk.Label(vent,text="V="+str (resultado[3]))
+	Label_VRes=tk.Label(vent,text="V="+str (resultado[4]))
 	Label_VRes.grid(column=4, row=1)
 
 
@@ -461,6 +449,20 @@ Para esto lo que hace es lo siguiente
 				una mutacion o un hijo
 
 """
+def obtieneResultado():
+	mayor=-99999
+	id=0
+	for i in range(len(z_entabla)-1):
+		if(float(z_entabla[i])>mayor):
+			id=i
+			mayor=float(z_entabla[i])
+
+	resultado.append(mayor)			
+	resultado.append(x_entabla[id])
+	resultado.append(y_entabla[id])
+	resultado.append(w_entabla[id])
+	resultado.append(v_entabla[id])
+
 def SegundaSeleccion(idVector):
 	acumulador=0
 	ordenados=z_acumulado
