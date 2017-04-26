@@ -133,6 +133,10 @@ Se guarda el numero de bits de precicion y las iteraciones que se van a hacer
 ES UNA CADENA
 """
 Bits_Precision=[]
+
+"""
+Es el numero de veces que va a iterar 
+"""
 Itera=[]
 
 """
@@ -170,6 +174,11 @@ Para editarlos, basta con usar poblacion[i]=UNA CADENA
 """
 poblacion=[]
 
+"""
+Aqui guardol el resultado a final de las iteraciones
+"""
+
+resultado=[]
 ###################################### NO MOVERLE ########################################
 raiz=tk.Tk()
 raiz.title("Algoritmos geneticos")
@@ -279,7 +288,7 @@ def ImprimeArreglos():
 	for i in range(len(Bits_Precision)):
 		print Bits_Precision[i].get()
 	print ""
-
+	
 
 def Maximizar():
 	############INICIO ALGORITMO################
@@ -289,46 +298,89 @@ def Maximizar():
 			minimos.append(Minimo(i)) #obten el minimo de la variable
 			maximos.append(Maximo(i)) #obten el maximo de la variable 
 			mjs.append(Calcula_mj(minimos[i],maximos[i])) #obtener cuantos bits debe tener la poblacion por culpa de esa variable
+
+	#modificacion Vicky
+	# recupera el numero de iteraciones y lo guarda en otra variable 
+	for i in range(len(Itera)):
+		iteraciones=int(Itera[i].get())
 	
-	############################ AQUI INICIARIA LA ITERACION N ################################################
+	print iteraciones
+	
 	for i in range(4): #Creo 4 vectores de poblacion
 		"""
-			En las siguientes iteraciones, en lugar de crear nuevos vectores y usar append
-			se va a hacer
+		En las siguientes iteraciones, en lugar de crear nuevos vectores y usar append
+		se va a hacer
 
-			poblacion[i]=Cruza(Num_de_vector1,Num_de_vector2)
+		poblacion[i]=Cruza(Num_de_vector1,Num_de_vector2)
 
-			O en su defecto
+		O en su defecto
 
-			poblacion[i]=Mutacion(Num_de_vector1)
+		poblacion[i]=Mutacion(Num_de_vector1)
 		"""
 		poblacion.append(NuevoVector()) ##Creo un nuevo vector que tenga el tamano de todas las mjs
 		SeleccionNatural(i) ##Antes de aceptarlo, veo que cumpla con las condiciones (s.a.)
 
-	"""
-	Ahora que ya tengo vectores que cumplen con las condicions (s.a), empiezo a llenar la tabla
-	(ver tus apuntes)
-	
-	En este caso empiezo con las variables X,Y,W,V pero con su valor real, el cual se obtiene de_
+	############################ AQUI INICIARIA LA ITERACION N ################################################
+	while True:
+		"""
+		Ahora que ya tengo vectores que cumplen con las condicions (s.a), empiezo a llenar la tabla
+		(ver tus apuntes)
 
-	min+decimal(CADENA BINARA)*(maximo-minimo)(2**mjs-1)
+		En este caso empiezo con las variables X,Y,W,V pero con su valor real, el cual se obtiene de_
 
-	"""
-	for i in range(4): #Para cada vector
-		Variable_enTabla(i) #Obtengo los valores X,Y.W.V que genera dicho vector
-		Evalua_Z_enTabla(i) #Evaluo los valores anteriores en la funcion objetivo y tengo Z
+		min+decimal(CADENA BINARA)*(maximo-minimo)(2**mjs-1)
 
-	Sumatoria_Z() #Hago la sumatoria en z
-	Porcientos() #Saco los porcentajes
-	AcumulativoZ() #Hago el zig zag de la tabla 
-	Aleatorios() #Genero cuatro numeros aleatorios de 0 a 1
-	for i in range(4): #Para cada vector de la poblacion
-		SegundaSeleccion(i) #Checo cuales vectores sobreviven para mutaciones y cruzas y cuales no
-	ImprimeArreglos()#Imprimo los valores que llevo hasta el momento
-	"""
+		"""
+		for i in range(4): #Para cada vector
+			Variable_enTabla(i) #Obtengo los valores X,Y.W.V que genera dicho vector
+			Evalua_Z_enTabla(i) #Evaluo los valores anteriores en la funcion objetivo y tengo Z
+
+		Sumatoria_Z() #Hago la sumatoria en z
+		Porcientos() #Saco los porcentajes
+		AcumulativoZ() #Hago el zig zag de la tabla 
+		Aleatorios() #Genero cuatro numeros aleatorios de 0 a 1
+		for i in range(4): #Para cada vector de la poblacion
+			SegundaSeleccion(i) #Checo cuales vectores sobreviven para mutaciones y cruzas y cuales no
+		
+		ImprimeArreglos()
+		print "*************************************************"
+		
+		for i in range(4):
+			if(Sobrevive(i)==0):
+				poblacion[i]=Mutar(i)
+				poblacion[i]=SeleccionNatural_ConMutacion(i)
+
+		ImprimeArreglos()#Imprimo los valores que llevo hasta el momento
+		
+
+		"""
 		Faltaria por agregar las mutaciones y las cruzas
-	"""
-####################################################AQUI TERMINARIA LA ITERACION ################################3
+		"""
+
+		iteraciones=iteraciones-1
+		print iteraciones
+		
+		if iteraciones==0 :
+			obtieneResultado()
+			break;
+	####################################################AQUI TERMINARIA LA ITERACION ################################3
+
+	
+
+
+def obtieneResultado():
+	menor=99999
+	id=0
+	for i in range(len(z_entabla)):
+		if(int(z_entabla[i])<menor):
+			id=i
+			menor=int(z_entabla[i])
+
+	
+	resultado.append(x_entabla[id])
+	resultado.append(y_entabla[id])
+	resultado.append(w_entabla[id])
+	resultado.append(v_entabla[id])
 
 	"""
 	Esto es lo que dibuja la tabla (hasta antes de "def SegundaSeleccion")
@@ -343,12 +395,51 @@ def Maximizar():
 	vent.columnconfigure(0,weight=1)
 	vent.rowconfigure(0,weight=1)
 
+	stringObjetivo="Z="
+	cont=0
+	conta=0
+	for l in range(len(z)):
+		if(z[l].get()!=""):
+			conta+=1
+
+	for l in range(len(z)):
+		if(z[l].get()!=""):
+			if(cont==0):
+				stringObjetivo+=z[l].get()+"X"
+			if(cont==1):
+				stringObjetivo+=z[l].get()+"Y"
+			if(cont==2):
+				stringObjetivo+=z[l].get()+"W"
+			if(cont==3):
+				stringObjetivo+=z[l].get()+"V"
+			if(cont<conta-1):
+				stringObjetivo+="+"
+			cont+=1
+
+
+
+	Label_FuncionObjetivo=tk.Label(vent,text=stringObjetivo)
+	Label_FuncionObjetivo.grid(column=3, row=0)
+
+	Label_FuncionTexto=tk.Label(vent,text="Funcion Objetivo:")
+	Label_FuncionTexto.grid(column=0, row=0,columnspan=2)
+
+	Label_XRes=tk.Label(vent,text="X="+str(resultado[0]))
+	Label_XRes.grid(column=1, row=1)
+	Label_YRes=tk.Label(vent,text="Y="+str (resultado[1]))
+	Label_YRes.grid(column=2, row=1)
+	Label_WRes=tk.Label(vent,text="W="+str (resultado[2]))
+	Label_WRes.grid(column=3, row=1)
+	Label_VRes=tk.Label(vent,text="V="+str (resultado[3]))
+	Label_VRes.grid(column=4, row=1)
+
 
 	Boton_salir=tk.Button(vent,text="Salir", command=fin)
-	Boton_salir.grid(column=1,row=1)
+	Boton_salir.grid(column=2,row=3)
 	
 	Tabla=tkt.Table(vent,rows=5,cols=5)
-	Tabla.grid(column=1, row=3)
+
+	Tabla.grid(column=1, row=2,columnspan=6)
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 """
@@ -398,9 +489,14 @@ def SegundaSeleccion(idVector):
 			if z_acumulado[i]==acumulador:
 				veredicto[idVector]=i
 
+
+				
+		
 """
 	Genero 4 numeros aleatorios del 0 al 1
 """
+
+
 def Aleatorios():
 	for i in range(4):
 		aleatorios_tabla[i]=random.uniform(0, 1)
@@ -600,7 +696,7 @@ def NuevoVector():
 		if z[i].get()!="":
 			#print "mjs: ",
 			#print mjs[i]
-			aux=random.randrange((2**int(mjs[i]))) ##crea un numero aleatorio que quepa en mjs digitos
+		 	aux=random.randrange((2**int(mjs[i]))) ##crea un numero aleatorio que quepa en mjs digitos
 			#print "Aux",
 			#print bin(aux)[2:]
 			if len(bin(aux)[2:])!=int(mjs[i]): #si el numero en binario tiene menos bits de los necesarios, llena la cadena con ceros
@@ -620,8 +716,165 @@ def NuevoVector():
 		Al hacer join la cadena es 01100001100000011 y se regresa como resultado
 	"""
 	return string_vector
+#Nos dice si sobrevive el vector
+def Sobrevive(idVector):
+	sobrevive=0
+	#Muere=0
+	#Vive =1 
+	for i in range(len(poblacion)):
+		if(veredicto[i]==idVector):
+			sobrevive=1
+	return sobrevive
 
+verectorQueSeVa=[0,0,0,0]
+
+def QuienSeVa():
+	for i in range(len(poblacion)):
+		verectorQueSeVa[veredicto[i]]=1
+		print verectorQueSeVa[i]
+	for i in range(4):	
+		if verectorQueSeVa[i]==0:
+			MejoradoVector=i
+			Mutar(i)
+
+#
+def Mutar(idVectorMutable):
+
+    ####### AQUI TU CODIGO ######
+    #poblacion[idVectorMutable]
+    # VectorMutado debe ser algo como: 1000100100101 ya al final
+    # pasamos la poblacion que muere a entero 
+   print "vamo a mutar"
+   tamano=len(poblacion[idVectorMutable])
+   
+   aleatorio=int(random.uniform(0, tamano))
+   string2=[]
+   str1=""
+   if(int(poblacion[idVectorMutable][aleatorio])==0):
+   	print "agarroo un 0"
+	string=poblacion[idVectorMutable][:]
 	
+	for x in range(len(string)):
+		if(x==aleatorio):
+			string2.append('1')
+		else:
+			string2.append(string[x])
+	str1=''.join(string2)
+   else:
+	print "agarro un 1"
+	string=poblacion[idVectorMutable][:]
+	
+	for x in range(len(string)):
+		if(x==aleatorio):
+			string2.append('0')
+		else:
+			string2.append(string[x])
+	str1=''.join(string2)
+	
+   print str1	
+   return str1
+
+#Verfica si es valido el vector que mutamos anteriormente 
+def SeleccionNatural_ConMutacion(idVector):
+	print "entre a seleccion natural"
+	vivio=0 # numero de condiciones que ha cumplido el vector con id idVector
+	while not vivio==len(igual): #mientras que el vector no cumpla todas las condiciones
+		vivio=0
+		##################### DEL VECTOR OBTIENE LAS PARTES X Y W V ##################
+		"""
+		Si el vector [00110011], esta parte devuelve x=00 y==11 w=00 v=11
+		Con base en el tamano que se le otorgo en mjs 
+		"""
+		strings=[]
+		acumulador=0
+		#print poblacion[idVector]
+		for i in range(len(z)):
+			if z[i].get()!="":
+				#obtener x,y,w,v del vector
+				strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
+				acumulador+=int(mjs[i])
+		################################################################################
+
+		sobrevive=0 #para saber si sobrevive a la i-esima condicion
+		valor=0 #lo que vale la ecuacion s.a. 
+		for i in range(len(igual)): #por cada condicion
+			#evaluo el polinomio
+			if len(strings)>0: #si hay cromosomas dentro del vector que pertenecen a x
+				# si la variable x si existe
+				if sa_x[i].get()!="" and strings[0]!="" and minimos[0]!="" and mjs[0]!="":
+					#print  int(sa_x[i].get()),
+					#print "*",
+					#print  int(strings[0],2)
+					#evalua (pero con el valor de min+decimal(CADENA BINARIA)*(algo/algo))
+					valor_procedimiento=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
+					#coeficiente*variable ya evaluada
+					valor+=int(sa_x[i].get())*valor_procedimiento #se suma al resultado del polinomio
+			########## REPETIR CON LOS DEMAS
+			if len(strings)>1:
+				#print "entre a 1"
+				if sa_y[i].get()!="" and strings[1]!="" and minimos[1]!="" and mjs[1]!="":
+					#print  int(sa_y[i].get()),
+					#print "*",
+					#print  int(strings[1],2)
+					valor_procedimiento=float(minimos[1])+int(strings[1],2)*((float(maximos[1])-float(minimos[1])))/(2**int(mjs[1])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_y[i].get())*valor_procedimiento
+			if len(strings)>2:
+				#print "entre a 2"
+				if sa_w[i].get()!="" and strings[2]!="" and minimos[2]!="" and mjs[2]!="":
+					#print  int(sa_w[i].get()),
+					#print "*",
+					#print  int(strings[2],2)
+					valor_procedimiento=float(minimos[2])+int(strings[2],2)*((float(maximos[2])-float(minimos[2])))/(2**int(mjs[2])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_w[i].get())*valor_procedimiento
+			if len(strings)>3:
+				#print "entre a 3"
+				if sa_v[i].get()!="" and strings[3]!="" and minimos[3]!="" and mjs[3]!="":
+					#print  int(sa_v[i].get()),
+					#print "*",
+					#print  int(strings[3],2)
+					valor_procedimiento=float(minimos[3])+int(strings[3],2)*((float(maximos[3])-float(minimos[3])))/(2**int(mjs[3])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_v[i].get())*valor_procedimiento
+			#print "VALOR:",
+			#print valor
+		
+			#checo el signo 
+			if signo[i]=="<=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor <= int(igual[i].get()):
+					sobrevive=1 ##cumple con la condicion
+			elif signo[i]==">=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor>=int(igual[i].get()):
+					sobrevive=1 #cumple con la conficion
+			else:
+				#print signo[i],
+				#print igual[i].get()
+				if valor==int(igual[i].get()):
+					sobrevive=1 #cumple con la conficion
+			if sobrevive==1:
+				#print "sobrevive"
+				sobrevive=0 #reinicio para que evalue la siguiente condicion
+				vivio+=1 #ya sobrevivio a una de las n condiciones
+			else:
+				break
+				#print "muere!"
+
+		if vivio==len(igual): #si sobrevivio a todas las condiciones, entonces es apto
+			return poblacion[idVector]
+		else: # matalo y crea otro vector, esto sige dentro del while, asi que repite el proceso
+			poblacion[idVector]=Mutar(idVector)
+"""
+	Crea un nuevo vector con numeros aleatorios y lo guarda en poblacion
+ """
+
 ################################################ NO MOVERLE DE AQUI PARA ABAJO ######################################
 
 def Calcula_mj(minimo,maximo):
@@ -841,5 +1094,4 @@ Text_itera=tk.Entry(vp,width=6,textvariable=itera)
 Text_itera.grid(column=3,row=11)
 
 raiz.mainloop()
-
 
