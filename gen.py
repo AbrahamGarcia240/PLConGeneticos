@@ -299,7 +299,7 @@ def Maximizar():
 			minimos.append(Minimo(i)) #obten el minimo de la variable
 			maximos.append(Maximo(i)) #obten el maximo de la variable 
 			mjs.append(Calcula_mj(minimos[i],maximos[i])) #obtener cuantos bits debe tener la poblacion por culpa de esa variable
-	#ImprimeArreglos()
+	ImprimeArreglos()
 	#modificacion Vicky
 	# recupera el numero de iteraciones y lo guarda en otra variable 
 	for i in range(len(Itera)):
@@ -344,6 +344,7 @@ def Maximizar():
 			SegundaSeleccion(i) #Checo cuales vectores sobreviven para mutaciones y cruzas y cuales no
 		
 		ImprimeArreglos()
+		#time.sleep(10)
 		print "*************************************************"
 		
 		
@@ -353,8 +354,7 @@ def Maximizar():
 					numeroVeredicto1=int(random.uniform(0, 4))
 					numeroVeredicto2=int(random.uniform(0, 4))
 					if(veredicto[numeroVeredicto1]==veredicto[numeroVeredicto2]):
-						numeroVeredicto2=int(random.uniform(0, 4))
-			
+						numeroVeredicto2=int(random.uniform(0, 4))	
 					poblacion[i]=Cruzar(veredicto[numeroVeredicto1],veredicto[numeroVeredicto2])
 					SeleccionNatural_ConCruza(i,veredicto[numeroVeredicto1],veredicto[numeroVeredicto2])
 
@@ -375,7 +375,7 @@ def Maximizar():
 		if iteraciones==0 :
 			obtieneResultado()
 			break;
-		time.sleep(1)
+		#time.sleep(10)
 	####################################################AQUI TERMINARIA LA ITERACION ################################3
 
 	
@@ -837,23 +837,18 @@ def Mutar(idVectorMutable):
    print str1	
    return str1
 def  Cruzar ( idVectorPadre , idVectorMadre ):
- print "Vamo a cruzar"
-      # ###### AQUI TU CODIGO ###### 
- VectorenCruza=[]
- VectorenCruza1=[]
- VectorenCruza2=[]
- VectorCruzado=""
+	tamano=0
+	for i in range(len(mjs)):
+		if mjs[i]!="":
+			tamano+=mjs[i]
 
- 
- VectorenCruza1.append(poblacion[idVectorPadre][0:(int(mjs[0]))])
- VectorenCruza2.append(poblacion[idVectorMadre][(int(mjs[1])):])
+	tamano=int(tamano)
+	linea=int(random.uniform(0, tamano))
+	VectorCruzado=""
+	VectorCruzado=poblacion[idVectorPadre][0:linea]+poblacion[idVectorMadre][linea:tamano]
+	VectorCruza=''.join(VectorCruzado)
 
- VectorenCruza = VectorenCruza1+VectorenCruza2
-
- VectorCruzado=''.join(VectorenCruza)
- print VectorCruzado
-  # VectorCruzado Debe Ser algo de Como: 1000100100101 ya al final de 
- return VectorCruzado
+ 	return VectorCruza
 
 #Verfica si es valido el vector que mutamos anteriormente 
 def SeleccionNatural_ConMutacion(idVector):
