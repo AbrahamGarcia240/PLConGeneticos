@@ -545,14 +545,7 @@ def obtieneResultado():
 		if(float(z_entabla[i])>mayor):
 			id=i
 			mayor=float(z_entabla[i])
-<<<<<<< HEAD
 
-	resultado.append(mayor)			
-	resultado.append(x_entabla[id])
-	resultado.append(y_entabla[id])
-	resultado.append(w_entabla[id])
-	resultado.append(v_entabla[id])
-=======
 	if perdidoMinimizar[0]==1:
 		mayor*=-1
 		mayor/=10
@@ -571,7 +564,6 @@ def obtieneResultado():
 		resultado.append(y_entabla[id])
 		resultado.append(w_entabla[id])
 		resultado.append(v_entabla[id])
->>>>>>> devVicky
 
 def SegundaSeleccion(idVector):
 	acumulador=0
