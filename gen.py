@@ -9,6 +9,7 @@ import math
 import random
 
 
+perdidoMinimizar=[]
 #variables globales, 
 """
 Las variables sa_ guardan  el valor por el que se multiplica a cada variable del problema, por
@@ -193,7 +194,14 @@ raiz.title("Algoritmos geneticos")
 	El resultado imprimirlo como -MAXIMIZAR
 """
 def Minimizar():
-	print "hola"
+	for i in range(len(z)):
+		if(z[i].get()!=''):
+			zcadena=str(-1*int(z[i].get()))
+			z[i].set(zcadena)
+			
+	perdidoMinimizar.append(1)
+	#ImprimeArreglos()
+	Maximizar()
 
 
 
@@ -292,6 +300,7 @@ def ImprimeArreglos():
 	
 
 def Maximizar():
+	perdidoMinimizar.append(0)
 	############INICIO ALGORITMO################
 	#Obtengo los maximos y minimos de cada variable asi como sus mjs
 	for i in range(len(z)): #para cada variable en la funcion objetivo
@@ -468,16 +477,31 @@ def Maximizar():
          		
 
          	elif(j==0):
-        		l = tk.Label(vent,text=str(x_entabla[i-1]))
+         		if perdidoMinimizar[0]==1:
+         			l=tk.Label(vent,text=str(float(x_entabla[i-1])/(10)))
+         		else:
+        			l = tk.Label(vent,text=str(x_entabla[i-1]))
 
         	elif(j==1):
-        		l = tk.Label(vent,text=str(y_entabla[i-1]))
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(y_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(y_entabla[i-1]))
         	elif(j==2):
-        		l = tk.Label(vent,text=str(w_entabla[i-1]))
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(w_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(w_entabla[i-1]))
         	elif(j==3):
-        		l = tk.Label(vent,text=str(v_entabla[i-1]))
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(v_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(v_entabla[i-1]))
         	elif(j==4):
-        		l = tk.Label(vent,text=str(z_entabla[i-1]))
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(z_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(z_entabla[i-1]))
         	elif(j==5):
         		l=tk.Label(vent,text=str(porcentaje_z[i-1]))
         	elif(j==6):
@@ -521,12 +545,24 @@ def obtieneResultado():
 		if(float(z_entabla[i])>mayor):
 			id=i
 			mayor=float(z_entabla[i])
-
-	resultado.append(mayor)			
-	resultado.append(x_entabla[id])
-	resultado.append(y_entabla[id])
-	resultado.append(w_entabla[id])
-	resultado.append(v_entabla[id])
+	if perdidoMinimizar[0]==1:
+		mayor*=-1
+		mayor/=10
+		resultado.append(mayor)
+		x=float(x_entabla[id]/10)		
+		resultado.append(x)
+		y=float(y_entabla[id]/10)	
+		resultado.append(y)
+		w=float(w_entabla[id]/10)	
+		resultado.append(w)
+		v=float(v_entabla[id]/10)	
+		resultado.append(v)
+	else:
+		resultado.append(mayor)			
+		resultado.append(x_entabla[id])
+		resultado.append(y_entabla[id])
+		resultado.append(w_entabla[id])
+		resultado.append(v_entabla[id])
 
 def SegundaSeleccion(idVector):
 	acumulador=0
