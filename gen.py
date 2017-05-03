@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import time
 import Tkinter as tk
 import tktable as tkt
 from numpy import *
@@ -8,6 +9,7 @@ import math
 import random
 
 
+perdidoMinimizar=[]
 #variables globales, 
 """
 Las variables sa_ guardan  el valor por el que se multiplica a cada variable del problema, por
@@ -192,7 +194,14 @@ raiz.title("Algoritmos geneticos")
 	El resultado imprimirlo como -MAXIMIZAR
 """
 def Minimizar():
-	print "hola"
+	for i in range(len(z)):
+		if(z[i].get()!=''):
+			zcadena=str(-1*int(z[i].get()))
+			z[i].set(zcadena)
+			
+	perdidoMinimizar.append(1)
+	#ImprimeArreglos()
+	Maximizar()
 
 
 
@@ -291,6 +300,7 @@ def ImprimeArreglos():
 	
 
 def Maximizar():
+	perdidoMinimizar.append(0)
 	############INICIO ALGORITMO################
 	#Obtengo los maximos y minimos de cada variable asi como sus mjs
 	for i in range(len(z)): #para cada variable en la funcion objetivo
@@ -298,14 +308,14 @@ def Maximizar():
 			minimos.append(Minimo(i)) #obten el minimo de la variable
 			maximos.append(Maximo(i)) #obten el maximo de la variable 
 			mjs.append(Calcula_mj(minimos[i],maximos[i])) #obtener cuantos bits debe tener la poblacion por culpa de esa variable
-
+	ImprimeArreglos()
 	#modificacion Vicky
 	# recupera el numero de iteraciones y lo guarda en otra variable 
 	for i in range(len(Itera)):
 		iteraciones=int(Itera[i].get())
 	
 	print iteraciones
-	
+
 	for i in range(4): #Creo 4 vectores de poblacion
 		"""
 		En las siguientes iteraciones, en lugar de crear nuevos vectores y usar append
@@ -343,14 +353,29 @@ def Maximizar():
 			SegundaSeleccion(i) #Checo cuales vectores sobreviven para mutaciones y cruzas y cuales no
 		
 		ImprimeArreglos()
+		#time.sleep(10)
 		print "*************************************************"
 		
-		for i in range(4):
-			if(Sobrevive(i)==0):
-				poblacion[i]=Mutar(i)
-				poblacion[i]=SeleccionNatural_ConMutacion(i)
+		if int(Itera[0].get())>10:
+			n=10
+		else:
+			n=2
 
-		ImprimeArreglos()#Imprimo los valores que llevo hasta el momento
+		if iteraciones>n:
+			for i in range(4):
+				if(Sobrevive(i)==0):
+					numeroVeredicto1=int(random.uniform(0, 4))
+					numeroVeredicto2=int(random.uniform(0, 4))
+					if(veredicto[numeroVeredicto1]==veredicto[numeroVeredicto2]):
+						numeroVeredicto2=int(random.uniform(0, 4))	
+					poblacion[i]=Cruzar(veredicto[numeroVeredicto1],veredicto[numeroVeredicto2])
+					SeleccionNatural_ConCruza(i,veredicto[numeroVeredicto1],veredicto[numeroVeredicto2])
+
+		else:
+			for i in range(4):
+				if(Sobrevive(i)==0):
+					poblacion[i]=Mutar(i)
+					poblacion[i]=SeleccionNatural_ConMutacion(i)
 		
 
 		"""
@@ -363,6 +388,7 @@ def Maximizar():
 		if iteraciones==0 :
 			obtieneResultado()
 			break;
+		#time.sleep(10)
 	####################################################AQUI TERMINARIA LA ITERACION ################################3
 
 	
@@ -423,11 +449,74 @@ def Maximizar():
 
 
 	Boton_salir=tk.Button(vent,text="Salir", command=fin)
-	Boton_salir.grid(column=2,row=3)
+	Boton_salir.grid(column=3,row=15)
 	
 	Tabla=tkt.Table(vent,rows=5,cols=5)
+	
+	for i in range(5):
+         for j in range(10):
+         	if (i==0):
+         		if(j==0):
+         			l=tk.Label(vent,text="X")
+         		elif(j==1):
+         			l=tk.Label(vent,text="Y")
+         		elif(j==2):
+         			l=tk.Label(vent,text="W")
+         		elif(j==3):
+         			l=tk.Label(vent,text="V")
+         		elif(j==4):
+         			l=tk.Label(vent,text="Z")
+         		elif(j==5):
+         			l=tk.Label(vent,text="% z")
+         		elif(j==6):
+         			l=tk.Label(vent,text="% z acumulado")
+         		elif(j==7):
+         			l=tk.Label(vent,text="Aleatorios")
+         		elif(j==8):
+         			l=tk.Label(vent,text="Nuevo V")
+         		
 
-	Tabla.grid(column=1, row=2,columnspan=6)
+         	elif(j==0):
+         		if perdidoMinimizar[0]==1:
+         			l=tk.Label(vent,text=str(float(x_entabla[i-1])/(10)))
+         		else:
+        			l = tk.Label(vent,text=str(x_entabla[i-1]))
+
+        	elif(j==1):
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(y_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(y_entabla[i-1]))
+        	elif(j==2):
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(w_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(w_entabla[i-1]))
+        	elif(j==3):
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(v_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(v_entabla[i-1]))
+        	elif(j==4):
+        		if perdidoMinimizar[0]==1:
+        			l=tk.Label(vent,text=str(float(z_entabla[i-1])/(10)))
+        		else:
+        			l = tk.Label(vent,text=str(z_entabla[i-1]))
+        	elif(j==5):
+        		l=tk.Label(vent,text=str(porcentaje_z[i-1]))
+        	elif(j==6):
+        		l = tk.Label(vent,text=str(z_acumulado[i-1]))
+        	elif(j==7):
+        		l = tk.Label(vent,text=str(aleatorios_tabla[i-1]))
+        	elif(j==8):
+        		l=tk.Label(vent,text=str(veredicto[i-1]))
+        	
+
+        	l.grid(row=i+5, column=j)
+
+
+
+	#Tabla.grid(column=1, row=2,columnspan=6)
 	otra_ventana.mainloop()
 	#vs=tk.Frame(otra_ventana)
 """
@@ -456,12 +545,33 @@ def obtieneResultado():
 		if(float(z_entabla[i])>mayor):
 			id=i
 			mayor=float(z_entabla[i])
+<<<<<<< HEAD
 
 	resultado.append(mayor)			
 	resultado.append(x_entabla[id])
 	resultado.append(y_entabla[id])
 	resultado.append(w_entabla[id])
 	resultado.append(v_entabla[id])
+=======
+	if perdidoMinimizar[0]==1:
+		mayor*=-1
+		mayor/=10
+		resultado.append(mayor)
+		x=float(x_entabla[id]/10)		
+		resultado.append(x)
+		y=float(y_entabla[id]/10)	
+		resultado.append(y)
+		w=float(w_entabla[id]/10)	
+		resultado.append(w)
+		v=float(v_entabla[id]/10)	
+		resultado.append(v)
+	else:
+		resultado.append(mayor)			
+		resultado.append(x_entabla[id])
+		resultado.append(y_entabla[id])
+		resultado.append(w_entabla[id])
+		resultado.append(v_entabla[id])
+>>>>>>> devVicky
 
 def SegundaSeleccion(idVector):
 	acumulador=0
@@ -775,6 +885,19 @@ def Mutar(idVectorMutable):
 	
    print str1	
    return str1
+def  Cruzar ( idVectorPadre , idVectorMadre ):
+	tamano=0
+	for i in range(len(mjs)):
+		if mjs[i]!="":
+			tamano+=mjs[i]
+
+	tamano=int(tamano)
+	linea=int(random.uniform(0, tamano))
+	VectorCruzado=""
+	VectorCruzado=poblacion[idVectorPadre][0:linea]+poblacion[idVectorMadre][linea:tamano]
+	VectorCruza=''.join(VectorCruzado)
+
+ 	return VectorCruza
 
 #Verfica si es valido el vector que mutamos anteriormente 
 def SeleccionNatural_ConMutacion(idVector):
@@ -876,7 +999,104 @@ def SeleccionNatural_ConMutacion(idVector):
 """
 	Crea un nuevo vector con numeros aleatorios y lo guarda en poblacion
  """
+def SeleccionNatural_ConCruza(idVector,idVectorPadre,idVectorMadre):
+	vivio=0 # numero de condiciones que ha cumplido el vector con id idVector
+	while not vivio==len(igual): #mientras que el vector no cumpla todas las condiciones
+		vivio=0
+		##################### DEL VECTOR OBTIENE LAS PARTES X Y W V ##################
+		"""
+		Si el vector [00110011], esta parte devuelve x=00 y==11 w=00 v=11
+		Con base en el tamano que se le otorgo en mjs 
+		"""
+		strings=[]
+		acumulador=0
+		#print poblacion[idVector]
+		for i in range(len(z)):
+			if z[i].get()!="":
+				#obtener x,y,w,v del vector
+				strings.append(poblacion[idVector][acumulador:acumulador+int(mjs[i])])
+				acumulador+=int(mjs[i])
+		################################################################################
 
+		sobrevive=0 #para saber si sobrevive a la i-esima condicion
+		valor=0 #lo que vale la ecuacion s.a. 
+		for i in range(len(igual)): #por cada condicion
+			#evaluo el polinomio
+			if len(strings)>0: #si hay cromosomas dentro del vector que pertenecen a x
+				# si la variable x si existe
+				if sa_x[i].get()!="" and strings[0]!="" and minimos[0]!="" and mjs[0]!="":
+					#print  int(sa_x[i].get()),
+					#print "*",
+					#print  int(strings[0],2)
+					#evalua (pero con el valor de min+decimal(CADENA BINARIA)*(algo/algo))
+					valor_procedimiento=float(minimos[0])+int(strings[0],2)*((float(maximos[0])-float(minimos[0])))/(2**int(mjs[0])-1)
+					#coeficiente*variable ya evaluada
+					valor+=int(sa_x[i].get())*valor_procedimiento #se suma al resultado del polinomio
+			########## REPETIR CON LOS DEMAS
+			if len(strings)>1:
+				#print "entre a 1"
+				if sa_y[i].get()!="" and strings[1]!="" and minimos[1]!="" and mjs[1]!="":
+					#print  int(sa_y[i].get()),
+					#print "*",
+					#print  int(strings[1],2)
+					valor_procedimiento=float(minimos[1])+int(strings[1],2)*((float(maximos[1])-float(minimos[1])))/(2**int(mjs[1])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_y[i].get())*valor_procedimiento
+			if len(strings)>2:
+				#print "entre a 2"
+				if sa_w[i].get()!="" and strings[2]!="" and minimos[2]!="" and mjs[2]!="":
+					#print  int(sa_w[i].get()),
+					#print "*",
+					#print  int(strings[2],2)
+					valor_procedimiento=float(minimos[2])+int(strings[2],2)*((float(maximos[2])-float(minimos[2])))/(2**int(mjs[2])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_w[i].get())*valor_procedimiento
+			if len(strings)>3:
+				#print "entre a 3"
+				if sa_v[i].get()!="" and strings[3]!="" and minimos[3]!="" and mjs[3]!="":
+					#print  int(sa_v[i].get()),
+					#print "*",
+					#print  int(strings[3],2)
+					valor_procedimiento=float(minimos[3])+int(strings[3],2)*((float(maximos[3])-float(minimos[3])))/(2**int(mjs[3])-1)
+					#print "valor procedimiento:",
+					#print valor_procedimiento
+					valor+=int(sa_v[i].get())*valor_procedimiento
+			#print "VALOR:",
+			#print valor
+		
+			#checo el signo 
+			if signo[i]=="<=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor <= int(igual[i].get()):
+					sobrevive=1 ##cumple con la condicion
+			elif signo[i]==">=":
+				#print signo[i],
+				#print igual[i].get()
+				if valor>=int(igual[i].get()):
+					sobrevive=1 #cumple con la conficion
+			else:
+				#print signo[i],
+				#print igual[i].get()
+				if valor==int(igual[i].get()):
+					sobrevive=1 #cumple con la conficion
+			if sobrevive==1:
+				#print "sobrevive"
+				sobrevive=0 #reinicio para que evalue la siguiente condicion
+				vivio+=1 #ya sobrevivio a una de las n condiciones
+			else:
+				break
+				#print "muere!"
+
+		if vivio==len(igual): #si sobrevivio a todas las condiciones, entonces es apto
+			return poblacion[idVector]
+		else: # matalo y crea otro vector, esto sige dentro del while, asi que repite el proceso
+			 poblacion[idVector]=Cruzar(idVectorPadre,idVectorMadre)
+"""
+	Crea un nuevo vector con numeros aleatorios y lo guarda en poblacion
+"""
 ################################################ NO MOVERLE DE AQUI PARA ABAJO ######################################
 
 def Calcula_mj(minimo,maximo):
@@ -895,42 +1115,69 @@ def Calcula_mj(minimo,maximo):
 
 def Maximo(idVariable):
 	maximo=-99999
+	r=0
 	if idVariable==0:
 		for i in range(len(sa_x)):
-			if int(sa_x[i].get())>=maximo:
-				maximo=int(sa_x[i].get())
+			numero=float(sa_x[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r>=maximo:
+				maximo=r
 	elif idVariable==1:
 		for i in range(len(sa_y)):
-			if int(sa_y[i].get())>=maximo:
-				maximo=int(sa_y[i].get())
+			numero=float(sa_y[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r>=maximo:
+				maximo=r
 	elif idVariable==2:
 		for i in range(len(sa_w)):
-			if int(sa_w[i].get())>=maximo:
-				maximo=int(sa_w[i].get())
+			numero=float(sa_w[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r>=maximo:
+				maximo=r
 	elif idVariable==3:
 		for i in range(len(sa_v)):
-			if int(sa_v[i].get())>=maximo:
-				maximo=int(sa_v[i].get())
+			numero=float(sa_v[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r>=maximo:
+				maximo=r
+
 	return maximo
 
 def Minimo(idVariable):
 	minimo=99999
+	r=0
 	if idVariable==0:
 		for i in range(len(sa_x)):
-			if int(sa_x[i].get())<minimo:
-				minimo=int(sa_x[i].get())
+			numero=float(sa_x[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r<=minimo:
+				minimo=r
 	elif idVariable==1:
 		for i in range(len(sa_y)):
-			if int(sa_y[i].get())<minimo:
-				minimo=int(sa_y[i].get())
+			numero=float(sa_y[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r<=minimo:
+				minimo=r
 	elif idVariable==2:
 		for i in range(len(sa_w)):
-			if int(sa_w[i].get())<minimo:
-				minimo=int(sa_w[i].get())
+			numero=float(sa_w[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r<=minimo:
+				minimo=r
 	elif idVariable==3:
 		for i in range(len(sa_v)):
-			if int(sa_v[i].get())<minimo:
-				minimo=int(sa_v[i].get())
+			numero=float(sa_v[i].get())
+			solucion=float(igual[i].get())
+			r=solucion/numero
+			if r<=minimo:
+				minimo=r
 	return minimo
 
 def fin():
@@ -1095,5 +1342,7 @@ Itera.append(itera)
 Text_itera=tk.Entry(vp,width=6,textvariable=itera)
 Text_itera.grid(column=3,row=11)
 
-raiz.mainloop()
+#poner en la matriz
 
+
+raiz.mainloop()
