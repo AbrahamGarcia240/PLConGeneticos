@@ -306,7 +306,7 @@ def Maximizar():
 		iteraciones=int(Itera[i].get())
 	
 	print iteraciones
-	n=iteraciones*2/3
+
 	for i in range(4): #Creo 4 vectores de poblacion
 		"""
 		En las siguientes iteraciones, en lugar de crear nuevos vectores y usar append
@@ -347,7 +347,11 @@ def Maximizar():
 		#time.sleep(10)
 		print "*************************************************"
 		
-		
+		if int(Itera[0].get())>10:
+			n=10
+		else:
+			n=2
+
 		if iteraciones>n:
 			for i in range(4):
 				if(Sobrevive(i)==0):
